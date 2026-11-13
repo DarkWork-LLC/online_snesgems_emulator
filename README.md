@@ -35,7 +35,6 @@ Features:
 - **WYSIWYG rich-text page editor** at `/wysiwyg/` — create, edit, preview and
   delete pages with formatted HTML content, backed by SQLite and the Django
   admin. No frontend build step or external CDN required.
-- **No persistent "Playing <game>" overlay** over the game canvas.
 
 ## WYSIWYG editor (`/wysiwyg/`)
 
