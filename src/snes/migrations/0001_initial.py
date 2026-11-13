@@ -14,11 +14,40 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Rom',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text='Display name shown in the UI.', max_length=200)),
-                ('filename', models.CharField(help_text='Filename on disk.', max_length=255, unique=True)),
-                ('file_size', models.BigIntegerField(help_text='Size of the ROM in bytes.')),
-                ('uploaded_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'name',
+                    models.CharField(
+                        help_text='Display name shown in the UI.',
+                        max_length=200,
+                    ),
+                ),
+                (
+                    'filename',
+                    models.CharField(
+                        help_text='Filename on disk.',
+                        max_length=255,
+                        unique=True,
+                    ),
+                ),
+                (
+                    'file_size',
+                    models.BigIntegerField(
+                        help_text='Size of the ROM in bytes.',
+                    ),
+                ),
+                (
+                    'uploaded_at',
+                    models.DateTimeField(auto_now_add=True),
+                ),
             ],
             options={
                 'verbose_name_plural': 'ROMs',

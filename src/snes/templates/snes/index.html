@@ -6,6 +6,8 @@
     <title>SNES Web Emulator</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'snes/css/style.css' %}">
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="app">
@@ -24,13 +26,51 @@
             <div id="fps"></div>
         </section>
 
+        <div class="controller">
+            <div class="gamepad">
+                <!-- Top row: L shoulder, Select + Start centered, R shoulder -->
+                <div class="shoulders">
+                    <button data-action="l">L</button>
+                    <div class="shoulder-center">
+                        <button data-action="select">Sel</button>
+                        <button data-action="start">Start</button>
+                    </div>
+                    <button data-action="r">R</button>
+                </div>
+
+                <!-- Main area: D-pad left, diamond action buttons right -->
+                <div class="pad-main">
+                    <div class="dpad">
+                        <div class="d-direction" data-dir="up">▲</div>
+                        <div class="d-direction" data-dir="left">◀</div>
+                        <div class="d-direction" data-dir="down">▼</div>
+                        <div class="d-direction" data-dir="right">▶</div>
+                    </div>
+
+                    <div class="action-diamond">
+                        <button data-action="y">Y</button>
+                        <button data-action="x">X</button>
+                        <button data-action="b">B</button>
+                        <button data-action="a">A</button>
+                    </div>
+                </div>
+
+                <!-- Thumbstick at bottom -->
+                <div class="sticks">
+                    <div class="thumbstick" id="thumbstick"><div class="inner"></div></div>
+                </div>
+            </div>
+        </div>
+
         <div class="controls-chrome">
             <button class="btn accent" id="play" disabled>Play</button>
             <button class="btn" id="pause" disabled>Pause</button>
             <button class="btn" id="reset" disabled>Reset</button>
             <button class="btn good" id="screenshot" disabled>Screenshot</button>
             <button class="btn" id="save-state" disabled>Save State</button>
-            <div class="spacer"></div>
+            <select id="rom-select" style="padding:6px;border-radius:6px;border:1px solid #4a5568;background:#0c0e12;color:#e6e9ef;width:150px;margin-right:10px;flex-shrink:0;">
+                <option value="">Select a ROM</option>
+            </select>
             <input type="text" id="state-name" placeholder="state name" style="width:120px;padding:6px;border-radius:6px;border:1px solid #4a5568;background:#0c0e12;color:#e6e9ef" disabled>
             <button class="btn accent" id="save-state-confirm" disabled>Save</button>
             <select id="state-list" style="padding:6px;border-radius:6px;border:1px solid #4a5568;background:#0c0e12;color:#e6e9ef" disabled></select>
@@ -55,46 +95,6 @@
             </select></label>
             <label><input type="checkbox" id="gamepads" checked> Gamepads</label>
             <label>Volume: <input type="range" id="volume" min="0" max="1" step="0.01" value="1"><span id="volume-label">1.00</span></label>
-        </div>
-
-        <div class="controller">
-            <div class="gamepad">
-                <!-- Top row: L shoulder, Select + Start centered, R shoulder -->
-                <div class="shoulders">
-                    <button data-action="l">L</button>
-                    <div class="shoulder-center">
-                        <button data-action="select">Sel</button>
-                        <button data-action="start">Start</button>
-                    </div>
-                    <button data-action="r">R</button>
-                </div>
-
-                <!-- Main area: D-pad left, diamond action buttons right -->
-                <div class="pad-main">
-                    <div class="dpad">
-                        <div class="d-direction" data-dir="up">▲</div>
-                        <div class="d-direction" data-dir="left">◀</div>
-                        <div class="d-direction" data-dir="down">▼</div>
-                        <div class="d-direction" data-dir="right">▶</div>
-                    </div>
-
-                    <div class="action-diamond">
-                        <div class="diamond-spacer"></div>
-                        <button data-action="y">Y</button>
-                        <div class="diamond-spacer"></div>
-                        <button data-action="x">X</button>
-                        <button data-action="b">B</button>
-                        <div class="diamond-spacer"></div>
-                        <button data-action="a">A</button>
-                        <div class="diamond-spacer"></div>
-                    </div>
-                </div>
-
-                <!-- Thumbstick at bottom -->
-                <div class="sticks">
-                    <div class="thumbstick" id="thumbstick"><div class="inner"></div></div>
-                </div>
-            </div>
         </div>
 
         <div class="statusbar">

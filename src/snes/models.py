@@ -3,7 +3,6 @@
 
 from django.conf import settings
 from django.db import models
-from pathlib import Path
 
 
 class Rom(models.Model):

@@ -13,6 +13,8 @@ delegates to src/snes_project/wsgi.py.
 
 import os
 import sys
+
+from django.core.wsgi import get_wsgi_application
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -23,7 +25,5 @@ for _dir in (SRC_DIR, PROJECT_ROOT):
         sys.path.insert(0, str(_dir))
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'snes_project.settings')
-
-from django.core.wsgi import get_wsgi_application
 
 application = get_wsgi_application()

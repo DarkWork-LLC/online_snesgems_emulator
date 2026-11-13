@@ -280,6 +280,13 @@ function bindVirtualGamepad() {
 }
 
 bindVirtualGamepad();
+    // Populate ROM select dropdown
+    ROMS.forEach((rom, i) => {
+        const option = document.createElement("option");
+        option.value = rom.id;
+        option.textContent = rom.name;
+        $("rom-select").append(option);
+    });
 
 function onEvent(e) {
     if (e.type === 'frame' && typeof e.fps === 'number') {

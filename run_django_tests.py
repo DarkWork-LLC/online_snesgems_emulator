@@ -4,8 +4,11 @@
 Discovers tests in the tests/django/ directory without interfering with
 the app's own test discovery.
 """
+import importlib
 import os
 import sys
+import traceback
+import unittest
 
 # Ensure the project root and src/ are on sys.path
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -16,12 +19,8 @@ if SRC_DIR not in sys.path:
     sys.path.insert(0, SRC_DIR)
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'snes_project.settings')
-import django
+import django  # noqa: E402
 django.setup()
-
-# Now import the test modules
-import importlib
-import traceback
 
 test_modules = [
     'tests.django.test_models',
@@ -35,7 +34,6 @@ for module_name in test_modules:
     try:
         module = importlib.import_module(module_name)
         # Django test modules use unittest.TestCase; find all test cases
-        import unittest
         loader = unittest.TestLoader()
         suite = loader.loadTestsFromModule(module)
         total += suite.countTestCases()

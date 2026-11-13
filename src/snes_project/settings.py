@@ -28,7 +28,9 @@ SECRET_KEY = 'django-insecure-2z1q9b^_8t@xm+b8@#ouqza&z)=vd&2@0m835s$v-_v86w0e#o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'hoobylab.pythonanywhere.com,localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS', 'hoobylab.pythonanywhere.com,localhost,127.0.0.1'
+).split(',')
 ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS if h.strip()]
 
 

@@ -1,0 +1,53 @@
+/* iOS / Firefox fluidity & beauty fixes */
+
+/* ---- Touch target optimization ---- */
+button, .gamepad .d-direction, .rom-card, .btn, .gamepad .shoulder-center > * {
+    min-height: 44px;         /* Apple HIG minimum touch target */
+    min-width: 44px;          /* 44px tap area */
+}
+
+/* ---- Focus outlines (Firefox) ---- */
+*:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* ---- iOS tap delay removal ---- */
+button, .gamepad button, .gamepad .d-direction, .rom-card {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+/* ---- Focus ring suppression on iOS (optional) */
+button:focus { outline: none; }
+
+/* ---- Fluid font scaling ---- */
+html { -webkit-text-size-adjust: 100%; }
+body { font: 15px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+
+/* ---- Better image rendering ---- */
+canvas, img, video { -webkit-interpolation: bicubic; image-rendering: -webkit-optimize-contrast; }
+
+/* ---- Reduced motion for accessibility ---- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0s !important;
+        transition-duration: 0s !important;
+    }
+}
+
+/* ---- Scrollbar styling (cross-browser) ---- */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--panel-2); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ---- Focus visible for controls-chrome ---- */
+.controls-chrome .btn:focus-visible,
+.controls-chrome .btn:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---- Stage canvas will-change for animation ---- */
+.stage canvas { will-change: transform; }
+
+/* ---- Status bar text color on dark bg ---- */
+.statusbar { color: var(--text); }

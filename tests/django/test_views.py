@@ -3,12 +3,12 @@
 # Django does not accept empty ALLOWED_HOSTS for tests, so we configure it
 # to 'testserver' so the test client can issue requests without errors.
 from django.conf import settings
-settings.ALLOWED_HOSTS = ['testserver']
-"""Django unit tests for the SNES views."""
 
-from django.test import TestCase
-from django.urls import reverse
-from snes.models import Rom
+settings.ALLOWED_HOSTS = ['testserver']
+
+from django.test import TestCase  # noqa: E402
+from django.urls import reverse  # noqa: E402
+from snes.models import Rom  # noqa: E402
 
 
 class ViewsTests(TestCase):

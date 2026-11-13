@@ -8,7 +8,11 @@ class Page(models.Model):
 
     title = models.CharField(max_length=200, help_text='Display title of the page.')
     slug = models.SlugField(max_length=200, unique=True, help_text='URL-friendly identifier.')
-    content = models.TextField(blank=True, default='', help_text='Rich HTML content produced by the editor.')
+    content = models.TextField(
+        blank=True,
+        default='',
+        help_text='Rich HTML content produced by the editor.',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

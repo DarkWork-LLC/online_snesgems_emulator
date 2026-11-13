@@ -45,8 +45,16 @@ class RomModelTests(TestCase):
 
     def test_rom_ordering(self):
         # Use unique filenames to avoid conflicts with existing DB records
-        Rom.objects.create(name='Z Game ' + str(self.rom.id), filename='z_' + str(self.rom.id) + '.sfc', file_size=1)
-        Rom.objects.create(name='A Game ' + str(self.rom.id), filename='a_' + str(self.rom.id) + '.sfc', file_size=1)
+        Rom.objects.create(
+            name='Z Game ' + str(self.rom.id),
+            filename='z_' + str(self.rom.id) + '.sfc',
+            file_size=1,
+        )
+        Rom.objects.create(
+            name='A Game ' + str(self.rom.id),
+            filename='a_' + str(self.rom.id) + '.sfc',
+            file_size=1,
+        )
         roms = list(Rom.objects.all())
         a_rom = next(r for r in roms if r.filename == 'a_' + str(self.rom.id) + '.sfc')
         z_rom = next(r for r in roms if r.filename == 'z_' + str(self.rom.id) + '.sfc')

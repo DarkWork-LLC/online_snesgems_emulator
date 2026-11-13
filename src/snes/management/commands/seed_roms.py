@@ -1,7 +1,5 @@
 """Seed the Rom table from the files in roms."""
 
-from pathlib import Path
-
 from django.conf import settings
 from django.core.management.base import BaseCommand
 

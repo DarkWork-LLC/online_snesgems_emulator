@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/6.1/howto/deployment/wsgi/
 import os
 import sys
 
+from django.core.wsgi import get_wsgi_application
 from pathlib import Path
 
 # wsgi.py lives at src/snes_project/wsgi.py.
@@ -22,7 +23,5 @@ for _dir in (PROJECT_DIR, ROOT_DIR):
         sys.path.insert(0, str(_dir))
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'snes_project.settings')
-
-from django.core.wsgi import get_wsgi_application
 
 application = get_wsgi_application()

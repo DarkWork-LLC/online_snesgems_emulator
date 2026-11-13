@@ -100,6 +100,13 @@ run:
 test:
 	$(PY) validation/test_emulator.py
 
+lint:
+	@echo "=== Running flake8 ==="
+	flake8 --max-line-length=100 --extend-ignore=E203,W503 src/ tests/ manage.py wsgi.py run_django_tests.py 2>&1 || true
+	@echo ""
+	@echo "=== Running pyflakes ==="
+	python3 -m pyflakes src/ tests/ manage.py wsgi.py run_django_tests.py 2>&1 || true
+
 pa:
 	@echo "PythonAnywhere deployment steps:"
 	@echo ""

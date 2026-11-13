@@ -59,4 +59,3 @@ def api_rom_stream(request, rom_id):
     )
     response['Content-Disposition'] = f'attachment; filename="{rom.filename}"'
     return response
-

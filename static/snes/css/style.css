@@ -26,6 +26,22 @@ html, body {
     font-size: 15px;
     -webkit-tap-highlight-color: transparent;
     overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+.app { display: block; height: 100%; gap: 12px; padding: 12px 14px 14px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
+/* Momentum scrolling + prevent iOS elastic bounce on scrollable areas */
+.app::-webkit-scrollbar { display: none; }
+
+.controls-chrome, .options-row, .statusbar, .app-header {
+    contain: layout style paint;
+}
+
+/* Buttons: remove iOS 300ms tap delay, crisp tap response */
+.btn, .gamepad button, .gamepad .d-direction {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .app-header {
@@ -37,30 +53,38 @@ html, body {
 .app-header h1 .logo { width: 28px; height: 28px; border-radius: 8px; background: conic-gradient(from 0deg, var(--accent), var(--good), var(--accent)); display: inline-block; }
 .app-header .sub { margin: 0; color: var(--muted); font-size: 13px; }
 
-.app { display: block; height: 100%; gap: 12px; padding: 12px 14px 14px; overflow-y: auto; }
-
 .rom-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: stretch; }
-.rom-cards { display: flex; flex-wrap: wrap; gap: 12px; flex: 1; min-width: 0; }
+.rom-cards { display: flex; flex-wrap: wrap; gap: 12px; flex: 1 1 0%; min-width: 0; }
 
 .rom-card {
-    flex: 1 1 240px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px;
-    padding: 18px 14px; border: 2px solid var(--border); border-radius: var(--radius);
+    flex: 1 1 100px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3px;
+    padding: 2px 1px; border: 1px solid var(--border); border-radius: var(--radius);
     background: var(--panel); color: var(--text); cursor: pointer;
-    transition: border-color 0.15s, transform 0.08s, box-shadow 0.15s; text-align: center;
+    transition: border-color 0.15s, transform 0.08s, box-shadow 0.15s;
+    animation: float 3s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.5s);
+    will-change: transform;
 }
 .rom-card:hover { border-color: var(--accent); }
 .rom-card:active { transform: scale(0.985); }
 .rom-card .rom-name { font-weight: 600; }
 .rom-card .rom-meta { color: var(--muted); font-size: 12px; }
 .rom-card.selected { border-color: var(--accent); background: var(--panel-2); box-shadow: 0 0 0 3px rgba(59,130,246,0.25); }
-.rom-card .dot { width: 18px; height: 18px; border-radius: 50%; background: var(--border); display: inline-block; }
+.rom-card .dot { width: 18px; height: 14px; border-radius: 50%; background: var(--border); display: inline-block; }
 
-.stage { position: relative; width: 100%; max-width: 100%; aspect-ratio: 8 / 7; max-height: 70vh; background: #080a0f; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; border-radius: 4px; image-rendering: pixelated; image-rendering: -moz-crisp-edges; background: #080a0f; }
+/* Dynamic floating animation for ROM title links */
+@keyframes float {
+    0%   { transform: translateY(0px); box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+    50%  { transform: translateY(-4px); box-shadow: 0 6px 12px rgba(0,0,0,0.4); }
+    100% { transform: translateY(0px); box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+}
+
+.stage { position: relative; width: 100%; max-width: 100%; aspect-ratio: 8 / 7; max-height: 70vh; background: #080a0f; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; contain: paint; }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; border-radius: 4px; image-rendering: pixelated; image-rendering: -moz-crisp-edges; background: #080a0f; will-change: transform; }
 .stage .placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; pointer-events: none; }
 
-.controls-chrome { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; }
-.btn { appearance: none; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); border-radius: 8px; padding: 8px 12px; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: background 0.1s, border-color 0.1s; }
+.controls-chrome { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: center; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px; }
+.btn { appearance: none; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); border-radius: 6px; padding: 6px 10px; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; transition: background 0.1s, border-color 0.1s; }
 .btn:hover { border-color: #4a5568; background: #232a36; }
 .btn:active { background: #1a202a; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
@@ -101,7 +125,6 @@ select, input[type="range"] { accent-color: var(--accent); }
     justify-content: center;
     align-items: center;
 }
-.diamond-spacer { grid-column: 1 / -1; height: 0; visibility: hidden; }
 .action-diamond button[data-action="y"] { grid-row: 1; grid-column: 2; }
 .action-diamond button[data-action="x"] { grid-row: 2; grid-column: 1; }
 .action-diamond button[data-action="b"] { grid-row: 2; grid-column: 3; }
@@ -112,15 +135,24 @@ select, input[type="range"] { accent-color: var(--accent); }
 .gamepad button:active, .gamepad .d-direction:active, .gamepad button.pressed, .gamepad .d-direction.pressed { background: var(--accent-dim); border-color: var(--accent); }
 .gamepad .shoulders { display: flex; gap: 6px; width: 100%; justify-content: center; }
 .gamepad .sticks { display: flex; justify-content: center; gap: 12px; width: 100%; }
-.thumbstick { width: 110px; height: 110px; border-radius: 50%; background: var(--panel-2); border: 1px solid var(--border); position: relative; touch-action: none; cursor: pointer; user-select: none; }
-.thumbstick .inner { position: absolute; inset: 8%; border-radius: 50%; background: #262c3a; border: 1px solid var(--border); transition: transform 0.04s; }
+.thumbstick { width: 100px; height: 100px; border-radius: 50%; background: var(--panel-2); border: 1px solid var(--border); position: relative; touch-action: none; cursor: pointer; user-select: none; contain: paint; }
+.thumbstick .inner { position: absolute; inset: 8%; border-radius: 50%; background: #262c3a; border: 1px solid var(--border); will-change: transform; }
 
 .statusbar { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; }
 
 @media (max-width: 680px) {
-    .app { padding: 10px 10px 12px; }
-    .app-header { padding: 10px 12px; }
-    .gamepad { min-width: 200px; padding: 14px; }
-    .thumbstick { width: 90px; height: 90px; }
+    .app { padding: 8px 8px 10px; gap: 8px; }
+    .app-header { padding: 8px 10px; min-height: 80px; }
+    .app-header h1 { font-size: 18px; }
+    .app-header .sub { font-size: 12px; }
+    .gamepad { min-width: 180px; padding: 12px; gap: 8px; }
+    .thumbstick { width: 80px; height: 80px; }
     .thumbstick .inner { inset: 7%; }
+    .dpad { grid-template-rows: 32px 32px; grid-template-columns: 32px 32px; gap: 4px; }
+    .d-direction { font-size: 16px; border-radius: 6px; }
+    .action-diamond { grid-template-columns: 38px 38px 38px; grid-template-rows: 38px 38px 38px; gap: 6px; }
+    .shoulders { gap: 4px; }
+    .shoulder-center { gap: 6px; }
+    .stage { max-height: 55vh; }
+*:focus-visible {    outline: 2px solid var(--accent);    outline-offset: 2px;}
 }

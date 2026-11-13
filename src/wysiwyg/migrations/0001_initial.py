@@ -14,12 +14,46 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Page',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(help_text='Display title of the page.', max_length=200)),
-                ('slug', models.SlugField(help_text='URL-friendly identifier.', max_length=200, unique=True)),
-                ('content', models.TextField(blank=True, default='', help_text='Rich HTML content produced by the editor.')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'title',
+                    models.CharField(
+                        help_text='Display title of the page.',
+                        max_length=200,
+                    ),
+                ),
+                (
+                    'slug',
+                    models.SlugField(
+                        help_text='URL-friendly identifier.',
+                        max_length=200,
+                        unique=True,
+                    ),
+                ),
+                (
+                    'content',
+                    models.TextField(
+                        blank=True,
+                        default='',
+                        help_text='Rich HTML content produced by the editor.',
+                    ),
+                ),
+                (
+                    'created_at',
+                    models.DateTimeField(auto_now_add=True),
+                ),
+                (
+                    'updated_at',
+                    models.DateTimeField(auto_now=True),
+                ),
             ],
             options={
                 'verbose_name': 'Page',
