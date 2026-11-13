@@ -59,28 +59,40 @@
 
         <div class="controller">
             <div class="gamepad">
-                <div class="dpad">
-                    <div class="d-direction" data-dir="up">▲</div>
-                    <div class="d-direction" data-dir="down">▼</div>
-                    <div class="d-direction" data-dir="left">◀</div>
-                    <div class="d-direction" data-dir="right">▶</div>
-                </div>
-                <div class="row">
-                    <button data-action="a">A</button>
-                    <button data-action="b">B</button>
-                    <button data-action="x">X</button>
-                    <button data-action="y">Y</button>
-                </div>
-                <div class="row">
+                <!-- Top row: L shoulder, Select + Start centered, R shoulder -->
+                <div class="shoulders">
                     <button data-action="l">L</button>
+                    <div class="shoulder-center">
+                        <button data-action="select">Sel</button>
+                        <button data-action="start">Start</button>
+                    </div>
                     <button data-action="r">R</button>
                 </div>
+
+                <!-- Main area: D-pad left, diamond action buttons right -->
+                <div class="pad-main">
+                    <div class="dpad">
+                        <div class="d-direction" data-dir="up">▲</div>
+                        <div class="d-direction" data-dir="left">◀</div>
+                        <div class="d-direction" data-dir="down">▼</div>
+                        <div class="d-direction" data-dir="right">▶</div>
+                    </div>
+
+                    <div class="action-diamond">
+                        <div class="diamond-spacer"></div>
+                        <button data-action="y">Y</button>
+                        <div class="diamond-spacer"></div>
+                        <button data-action="x">X</button>
+                        <button data-action="b">B</button>
+                        <div class="diamond-spacer"></div>
+                        <button data-action="a">A</button>
+                        <div class="diamond-spacer"></div>
+                    </div>
+                </div>
+
+                <!-- Thumbstick at bottom -->
                 <div class="sticks">
                     <div class="thumbstick" id="thumbstick"><div class="inner"></div></div>
-                </div>
-                <div class="start-select">
-                    <button data-action="start">Start</button>
-                    <button data-action="select">Sel</button>
                 </div>
             </div>
         </div>
