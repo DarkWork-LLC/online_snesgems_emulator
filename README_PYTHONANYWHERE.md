@@ -48,7 +48,10 @@ This adds a Django WYSIWYG rich-text page editor to the SNES web emulator, ready
 3. **Configure the web app**:
    - Source code: `/home/<username>/online_snesgems_emulator`
    - Working directory: same
-   - WSGI file: point it at the project's `src/snes_project/wsgi.py`
+   - WSGI file: point it at the project's root-level `wsgi.py`
+     (e.g. `/home/<username>/online_snesgems_emulator/wsgi.py`).
+   - This file adds `src/` to `sys.path` so `snes_project` is importable.
+   - Do NOT point to `src/snes_project/wsgi.py` directly.
 
 4. **Configure static files** on the Web tab:
    - Static files URL: `/static/`
