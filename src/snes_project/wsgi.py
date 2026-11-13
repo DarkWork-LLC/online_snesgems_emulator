@@ -12,10 +12,14 @@ import sys
 
 from pathlib import Path
 
-# Ensure the project directory is on the path (required on PythonAnywhere).
+# wsgi.py lives at src/snes_project/wsgi.py.
+#   parent.parent = src/        (needed so `snes_project` is importable)
+#   parent.parent.parent = /    project root (needed so `staticfiles/`, `static/`, `roms/` resolve)
 PROJECT_DIR = Path(__file__).resolve().parent.parent
-if str(PROJECT_DIR) not in sys.path:
-    sys.path.insert(0, str(PROJECT_DIR))
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+for _dir in (PROJECT_DIR, ROOT_DIR):
+    if str(_dir) not in sys.path:
+        sys.path.insert(0, str(_dir))
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'snes_project.settings')
 

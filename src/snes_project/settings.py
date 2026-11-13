@@ -117,6 +117,13 @@ USE_I18N = True
 USE_TZ = True
 
 
+# Security / proxy (PythonAnywhere terminates HTTPS and forwards via X-Forwarded-*)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
