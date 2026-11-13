@@ -82,3 +82,31 @@ This adds a Django WYSIWYG rich-text page editor to the SNES web emulator, ready
 - Content is stored in SQLite (single `db.sqlite3` file), which PythonAnywhere supports on free/paid accounts.
 - CSRF protection is enabled on the save/delete API endpoints; the editor reads the Django `csrftoken` cookie automatically.
 - The SNES emulator overlay fix (`showPlaceholder('')`) means the game canvas is no longer covered by a persistent "Playing <name>" banner.
+
+### Troubleshooting: static files served as `text/html` (MIME mismatch)
+
+If your browser console shows errors like:
+
+> The resource from ".../static/snes/css/style.css" was blocked due to MIME type ("text/html")
+> Loading module from ".../static/snes/js/app.js" was blocked because of a disallowed MIME type ("text/html")
+
+this means PythonAnywhere is returning an HTML page (usually a 404) instead of the actual CSS/JS file. The fix:
+
+1. **Confirm the static files mapping** on the PythonAnywhere "Web" tab:
+   - Static files URL: `/static/`
+   - Static files directory: `/home/<username>/online_snesgems_emulator/staticfiles`
+   - (NOT the `static/` source directory — that's only for `collectstatic` to read from.)
+
+2. **Run `collectstatic`** in a bash console on PythonAnywhere (this step is required after every deploy, because `staticfiles/` is gitignored and not uploaded):
+
+   ```bash
+   workon snesenv
+   cd /home/<username>/online_snesgems_emulator
+   python manage.py collectstatic --noinput
+   ```
+
+   This copies everything from `static/` into `staticfiles/`, which PythonAnywhere serves directly at `/static/`.
+
+3. **Reload** the web app from the PythonAnywhere dashboard.
+
+Re-run `collectstatic` whenever you change CSS, JS, or vendor files.
