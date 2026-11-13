@@ -53,10 +53,20 @@ This adds a Django WYSIWYG rich-text page editor to the SNES web emulator, ready
    - Source code: `/home/<username>/online_snesgems_emulator`
    - Working directory: same
    - WSGI file: point it at the project's `snes_project/wsgi.py` (or use the default generated one and edit it to set the Django settings module and add the project to `sys.path`).
-   - Static files URL: `/static/` → directory: `/home/<username>/online_snesgems_emulator/snes/static` (and add `/home/<username>/online_snesgems_emulator/wysiwyg/static` as an additional static directory if needed).
+   - Static files URL: `/static/` → directory: `/home/<username>/online_snesgems_emulator/staticfiles` (this is the `STATIC_ROOT` directory after running `collectstatic`).
    - **Allowed hosts**: `ALLOWED_HOSTS` in `snes_project/settings.py` now defaults to `hoobylab.pythonanywhere.com,localhost,127.0.0.1`. You can override via the `ALLOWED_HOSTS` environment variable in your PythonAnywhere web app config (e.g. `ALLOWED_HOSTS=yourdomain.pythonanywhere.com,www.yourdomain.com`).
 
-5. **Database**:
+5. **Collect static files** (required on PythonAnywhere — Django does not serve static files in production):
+   ```bash
+   workon snesenv
+   cd /home/<username>/online_snesgems_emulator
+   python manage.py collectstatic --noinput
+   ```
+   This copies everything from `snes/static/` and `wysiwyg/static/` into `staticfiles/`, which PythonAnywhere serves directly at `/static/`.
+
+   Re-run `collectstatic` whenever you change CSS, JS, or vendor files.
+
+6. **Database**:
    ```bash
    workon snesenv
    cd /home/<username>/online_snesgems_emulator
@@ -64,7 +74,7 @@ This adds a Django WYSIWYG rich-text page editor to the SNES web emulator, ready
    python manage.py createsuperuser   # optional, for admin access
    ```
 
-6. **Reload** the web app from the PythonAnywhere dashboard. Visit `https://<username>.pythonanywhere.com/wysiwyg/`.
+7. **Reload** the web app from the PythonAnywhere dashboard. Visit `https://<username>.pythonanywhere.com/wysiwyg/`.
 
 ## Notes
 
