@@ -1,0 +1,8 @@
+{
+  "name": "online_snesgems_emulator",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test:js": "node --test tests/js/"
+  }
+}

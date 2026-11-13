@@ -1,0 +1,87 @@
+/* ------------------------------------------------------------------ */
+/*  WYSIWYG editor styles                                             */
+/* ------------------------------------------------------------------ */
+
+#toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    padding: 8px 10px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    user-select: none;
+}
+
+.tbtn {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    min-height: 34px;
+    transition: background 0.1s, border-color 0.1s;
+}
+.tbtn:hover { border-color: #4a5568; background: #232a36; }
+.tbtn:active { background: #1a202a; }
+.tbtn.accent { color: var(--accent); border-color: #4a6db8; }
+.tbtn.accent:hover { background: rgba(59,130,246,0.15); }
+.tsep { width: 1px; height: 22px; background: var(--border); margin: 0 2px; }
+
+#editor {
+    position: absolute;
+    inset: 52px 0 0 0; /* below toolbar, inside stage */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: #080a0f;
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    padding: 16px;
+    outline: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+#editor[contenteditable="true"]:empty:before {
+    content: attr(data-placeholder);
+    color: var(--muted);
+    pointer-events: none;
+    position: absolute;
+    inset: 16px;
+}
+#editor h1, #editor h2, #editor h3 { margin: 1.2em 0 0.6em; line-height: 1.3; }
+#editor h1 { font-size: 24px; }
+#editor h2 { font-size: 20px; }
+#editor h3 { font-size: 17px; }
+#editor p { margin: 0 0 1em; }
+#editor ul, #editor ol { margin: 0 0 1em 1.4em; }
+#editor blockquote { margin: 0 0 1em 1.6em; padding-left: 12px; border-left: 3px solid var(--accent); color: var(--muted); }
+#editor code { background: #1c212b; padding: 2px 6px; border-radius: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
+#editor pre { background: #1c212b; padding: 12px; border-radius: 6px; overflow: auto; }
+#editor pre code { padding: 0; background: transparent; font-size: inherit; }
+
+.editor-footer {
+    padding: 6px 10px;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    background: var(--panel);
+}
+
+.page-content h1, .page-content h2, .page-content h3 { margin-top: 1.4em; }
+.page-content a { color: var(--accent); text-decoration: underline; }
+
+/* Make the editor stage fill nicely */
+#stage { display: flex; flex-direction: column; }

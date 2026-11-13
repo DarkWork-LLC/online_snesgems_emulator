@@ -1,0 +1,134 @@
+{
+  "id": "snes9x",
+  "version": "0.1.0",
+  "name": "Snes9x (WebAssembly)",
+  "description": "Snes9x — the long-running Super Nintendo / Super Famicom emulator — compiled to WebAssembly. Loads .sfc/.smc cartridge images, including the enhancement chips (Super FX, SA-1, DSP-1, S-DD1, SPC7110, C4, OBC1, S-RTC).",
+  "artifacts": {
+    "wasm": "snes9x/snes9x.wasm",
+    "js": "snes9x/snes9x.js"
+  },
+  "assets": [
+    {
+      "key": "rom",
+      "mountPath": "/rom.sfc",
+      "required": true,
+      "accept": [
+        ".sfc",
+        ".smc",
+        ".fig",
+        ".swc"
+      ],
+      "description": "Super Nintendo / Super Famicom cartridge image. Copier headers (the 512-byte kind) are detected and skipped automatically."
+    }
+  ],
+  "input": "snes9x",
+  "video": {
+    "baseWidth": 256,
+    "baseHeight": 224,
+    "aspect": "4:3"
+  },
+  "options": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "renderFilter": {
+        "type": "string",
+        "enum": [
+          "pixelated",
+          "smooth"
+        ],
+        "default": "pixelated",
+        "description": "Scaling filter applied when the picture is stretched to the canvas. Pixelated keeps pixel art crisp; smooth softens it."
+      },
+      "aspect": {
+        "type": "string",
+        "enum": [
+          "4:3",
+          "1:1"
+        ],
+        "default": "4:3",
+        "description": "Presented aspect ratio: 4:3 is the picture as it looked on a CRT; 1:1 shows square pixels."
+      },
+      "cropOverscan": {
+        "type": "boolean",
+        "default": true,
+        "description": "Crop the picture to 224 lines. Off shows the full 239-line output, including the rows many games leave as garbage."
+      },
+      "volume": {
+        "type": "number",
+        "default": 1,
+        "minimum": 0,
+        "maximum": 1,
+        "description": "Master audio volume."
+      },
+      "interpolation": {
+        "type": "string",
+        "enum": [
+          "none",
+          "linear",
+          "gaussian",
+          "cubic",
+          "sinc"
+        ],
+        "default": "gaussian",
+        "description": "How the DSP resamples its 8-bit samples. Gaussian is what the real hardware does; the others trade accuracy for sharpness."
+      },
+      "region": {
+        "type": "string",
+        "enum": [
+          "auto",
+          "ntsc",
+          "pal"
+        ],
+        "default": "auto",
+        "description": "Video standard: auto follows the cartridge header, or force NTSC (60.098Hz) / PAL (50.007Hz). The core reads it while mapping the cartridge, so the game restarts to apply it."
+      },
+      "maxSpriteTilesPerLine": {
+        "type": "integer",
+        "default": 34,
+        "enum": [
+          34,
+          128
+        ],
+        "description": "Sprite tiles drawn per scanline. 34 matches hardware, flicker included; 128 removes sprite dropout."
+      },
+      "superFXClockMultiplier": {
+        "type": "integer",
+        "default": 100,
+        "minimum": 50,
+        "maximum": 400,
+        "description": "Super FX clock as a percentage of stock. Above 100 speeds up Star Fox / Yoshi’s Island; it is a hack, not accuracy."
+      },
+      "multitap": {
+        "type": "boolean",
+        "default": false,
+        "description": "Emulate the 5-player Multitap in controller port 2, giving pads 2-5. Only a handful of games support it."
+      },
+      "gamepads": {
+        "type": "boolean",
+        "default": true,
+        "description": "Poll connected gamepads (standard mapping) each frame."
+      },
+      "logLevel": {
+        "type": "string",
+        "enum": [
+          "off",
+          "error",
+          "debug"
+        ],
+        "default": "error",
+        "description": "Core messages printed to the browser console: errors and warnings, or also its informational ones."
+      },
+      "escMenu": {
+        "type": "boolean",
+        "default": true,
+        "description": "Show the built-in in-game settings menu when the player presses Escape."
+      }
+    }
+  },
+  "capabilities": {
+    "saveStates": true,
+    "sram": true,
+    "coreSelectable": false
+  }
+}

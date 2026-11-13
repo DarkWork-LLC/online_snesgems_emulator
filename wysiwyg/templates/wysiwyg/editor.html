@@ -1,0 +1,57 @@
+{% extends 'wysiwyg/base.html' %}
+
+{% block title %}{% if page %}Edit "{{ page.title }}"{% else %}New page{% endif %}{% endblock %}
+
+{% block content %}
+<section class="stage" id="stage" style="max-height:75vh; margin:0 14px 14px;">
+    <div class="toolbar" id="toolbar">
+        <button class="tbtn" data-action="undo" title="Undo">↶</button>
+        <button class="tbtn" data-action="redo" title="Redo">↷</button>
+        <div class="tsep"></div>
+        <button class="tbtn" data-action="bold" title="Bold">B</button>
+        <button class="tbtn" data-action="italic" title="Italic">I</button>
+        <button class="tbtn" data-action="underline" title="Underline">U</button>
+        <button class="tbtn" data-action="strike" title="Strikethrough">S</button>
+        <div class="tsep"></div>
+        <button class="tbtn" data-action="formatBlock" data-value="<h1>" title="Heading 1">H1</button>
+        <button class="tbtn" data-action="formatBlock" data-value="<h2>" title="Heading 2">H2</button>
+        <button class="tbtn" data-action="formatBlock" data-value="<h3>" title="Heading 3">H3</button>
+        <button class="tbtn" data-action="formatBlock" data-value="<p>" title="Paragraph">P</button>
+        <div class="tsep"></div>
+        <button class="tbtn" data-action="insertUnorderedList" title="Bullet list">• List</button>
+        <button class="tbtn" data-action="insertOrderedList" title="Numbered list">1. List</button>
+        <div class="tsep"></div>
+        <button class="tbtn" data-action="justifyLeft" title="Align left">↰</button>
+        <button class="tbtn" data-action="justifyCenter" title="Align center">↱</button>
+        <button class="tbtn" data-action="justifyRight" title="Align right">↳</button>
+        <div class="tsep"></div>
+        <button class="tbtn" data-action="link" title="Link">🔗</button>
+        <button class="tbtn" data-action="unlink" title="Remove link">✖</button>
+        <div class="tsep"></div>
+        <button class="tbtn" data-action="code" title="Code">&lt;&gt;</button>
+        <button class="tbtn" data-action="removeFormat" title="Clear formatting">⌫</button>
+        <div class="tsep"></div>
+        <button class="tbtn accent" data-action="insertHTML" data-value="<hr>" title="Horizontal rule">─</button>
+    </div>
+
+    <div class="editor" id="editor" contenteditable="true">{% if page %}{{ page.content|safe }}{% endif %}</div>
+
+    <div class="editor-footer" id="editor-footer">
+        <span id="word-count">0 words</span>
+    </div>
+</section>
+
+<section class="controls-chrome" style="margin:0 14px 14px; justify-content:flex-start;">
+    <label>Title: <input type="text" id="title" value="{% if page %}{{ page.title }}{% endif %}" style="width:260px;padding:6px;border-radius:6px;border:1px solid #4a5568;background:#0c0e12;color:#e6e9ef;margin-left:6px;"></label>
+    <label>Slug: <input type="text" id="slug" value="{% if page %}{{ page.slug }}{% endif %}" style="width:200px;padding:6px;border-radius:6px;border:1px solid #4a5568;background:#0c0e12;color:#e6e9ef;margin-left:6px;"></label>
+    <input type="hidden" id="page-id" value="{% if page %}{{ page.id }}{% endif %}">
+    <button class="btn accent" id="btn-save">Save page</button>
+    <button class="btn" id="btn-preview">Preview</button>
+    {% if page %}
+    <button class="btn danger" id="btn-delete">Delete page</button>
+    <a href="{% url 'wysiwyg:view' page.slug %}" class="btn">View page</a>
+    {% endif %}
+    <button class="btn" id="btn-back">Back to list</button>
+    <div id="save-status" style="margin-left:10px;color:#4ade80;font-size:13px;"></div>
+</section>
+{% endblock %}

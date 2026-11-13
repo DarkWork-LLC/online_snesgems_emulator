@@ -1,0 +1,28 @@
+{% extends 'wysiwyg/base.html' %}
+
+{% block title %}Pages{% endblock %}
+
+{% block content %}
+<section class="rom-row" style="padding:14px;">
+    <div class="rom-cards" style="flex:1;">
+        <a href="{% url 'wysiwyg:new' %}" class="rom-card" style="justify-content:flex-start;">
+            <div style="font-size:24px;margin-right:10px;">+</div>
+            <div style="text-align:left;">
+                <div class="rom-name">New page</div>
+                <div class="rom-meta">Create a new rich-text page</div>
+            </div>
+        </a>
+        {% for page in pages %}
+        <a href="{% url 'wysiwyg:edit' page.slug %}" class="rom-card">
+            <div style="font-size:24px;margin-right:10px;">📄</div>
+            <div style="text-align:left;">
+                <div class="rom-name">{{ page.title }}</div>
+                <div class="rom-meta">{{ page.slug }} &middot; updated {{ page.updated_at|date:"M d, Y H:i" }}</div>
+            </div>
+        </a>
+        {% empty %}
+        <div class="placeholder" style="color:#8b93a3;">No pages yet. Create one above.</div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
