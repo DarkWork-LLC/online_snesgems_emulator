@@ -5,6 +5,7 @@
 #   make setup       - full first-time setup: venv, deps, migrate, seed, collectstatic
 #   make install     - install dependencies into current Python/venv
 #   make collectstatic - gather static files into staticfiles/ for production
+#   make checkstatic - verify staticfiles/ has the expected files (debug PA static mapping)
 #   make migrate     - run Django migrations
 #   make seed        - seed ROMs into the database
 #   make build       - install deps, migrate, seed ROMs, collectstatic
@@ -30,7 +31,7 @@ VENV_PIP    = $(VENV)/bin/pip
 PY = $(if $(wildcard $(VENV_PYTHON)),$(VENV_PYTHON),$(PYTHON))
 PIP_CMD = $(if $(wildcard $(VENV_PIP)),$(VENV_PIP),$(PIP))
 
-.PHONY: clean setup install venv collectstatic migrate seed build run test pa help
+.PHONY: clean setup install venv collectstatic checkstatic migrate seed build run test pa help
 
 help:
 	@echo "Targets:"
@@ -38,6 +39,7 @@ help:
 	@echo "  setup       - full first-time setup (venv, deps, migrate, seed, collectstatic)"
 	@echo "  install     - install dependencies into current Python/venv"
 	@echo "  collectstatic - gather static files into staticfiles/ for production"
+	@echo "  checkstatic   - verify staticfiles/ has the expected files (debug PA static mapping)"
 	@echo "  migrate     - run Django migrations"
 	@echo "  seed        - seed ROMs into the database"
 	@echo "  build       - install deps, migrate, seed ROMs, collectstatic"
@@ -67,6 +69,21 @@ seed:
 
 collectstatic:
 	$(PY) manage.py collectstatic --noinput
+
+checkstatic:
+	@echo "=== Static files check ==="
+	@echo "STATIC_ROOT = $(CURDIR)/staticfiles"
+	@if [ -d "staticfiles" ]; then \
+		echo "staticfiles/ exists: YES"; \
+		echo "Key files:"; \
+		ls -la staticfiles/snes/css/style.css staticfiles/snes/js/app.js staticfiles/favicon.ico 2>/dev/null || echo "  (some files missing)"; \
+	else \
+		echo "staticfiles/ exists: NO  (run: make collectstatic)"; \
+	fi
+	@echo ""
+	@echo "PythonAnywhere Web tab -> Static files should be:"
+	@echo "  URL: /static/"
+	@echo "  Dir: $(CURDIR)/staticfiles"
 
 build: install migrate seed collectstatic
 
