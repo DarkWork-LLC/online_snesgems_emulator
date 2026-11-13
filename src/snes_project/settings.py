@@ -126,11 +126,8 @@ STATIC_URL = '/static/'
 # (PythonAnywhere serves this directory directly at /static/).
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Where the Snes9x WASM SDK and WYSIWYG editor assets live.
+# All static assets live in the top-level static/ directory.
 STATICFILES_DIRS = [
-    BASE_DIR / 'src' / 'snes' / 'static',
-    BASE_DIR / 'src' / 'wysiwyg' / 'static',
-    # Project-level static assets dropped straight into the top-level static/.
     BASE_DIR / 'static',
 ]
 

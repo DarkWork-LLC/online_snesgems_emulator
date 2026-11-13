@@ -25,7 +25,7 @@ globalThis.document = {
 };
 function resetEvents() { dispatched.length = 0; }
 
-import * as controller from '../../src/snes/static/snes/js/controller.js';
+import * as controller from '../../static/snes/js/controller.js';
 
 export async function run() {
     let passed = 0, failed = 0, results = [];

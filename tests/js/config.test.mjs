@@ -3,8 +3,8 @@
 /* ------------------------------------------------------------------ */
 
 import { strict as assert } from 'node:assert';
-import { bindConfig, createSettingsStore } from '../../src/snes/static/snes/js/vendor/snes9x.config.js';
-import { SNES9X_ENGINE_OPTIONS } from '../../src/snes/static/snes/js/vendor/snes9x.options.js';
+import { bindConfig, createSettingsStore } from '../../static/snes/js/vendor/snes9x.config.js';
+import { SNES9X_ENGINE_OPTIONS } from '../../static/snes/js/vendor/snes9x.options.js';
 
 export async function run() {
     let passed = 0, failed = 0, results = [];

@@ -12,15 +12,15 @@ This adds a Django WYSIWYG rich-text page editor to the SNES web emulator, ready
 | `wysiwyg/urls.py` | `/wysiwyg/` routes |
 | `wysiwyg/admin.py` | Admin registration for `Page` |
 | `src/wysiwyg/templates/wysiwyg/` | base, list, editor, view templates |
-| `src/wysiwyg/static/wysiwyg/css/editor.css` | Editor toolbar + editable area styles |
-| `src/wysiwyg/static/wysiwyg/js/editor.js` | Vanilla-JS rich-text editor (contenteditable) + save/delete API calls |
+| `static/wysiwyg/css/editor.css` | Editor toolbar + editable area styles |
+| `static/wysiwyg/js/editor.js` | Vanilla-JS rich-text editor (contenteditable) + save/delete API calls |
 | `src/wysiwyg/migrations/0001_initial.py` | Initial migration for `Page` |
 
 ## Changes to existing files
 
 - `src/snes_project/settings.py` — added `'wysiwyg'` to `INSTALLED_APPS`
 - `snes_project/urls.py` — added `path('wysiwyg/', include('wysiwyg.urls'))`
-- `src/snes/static/snes/js/app.js` — removed the "Playing <game name>" overlay (placeholder is now cleared on load)
+- `static/snes/js/app.js` — removed the "Playing <game name>" overlay (placeholder is now cleared on load)
 
 ## URLs
 
@@ -62,7 +62,7 @@ This adds a Django WYSIWYG rich-text page editor to the SNES web emulator, ready
    cd /home/<username>/online_snesgems_emulator
    python manage.py collectstatic --noinput
    ```
-   This copies everything from `src/snes/static/` and `src/wysiwyg/static/` (plus the top-level `static/`) into `staticfiles/`, which PythonAnywhere serves directly at `/static/`.
+   This copies everything from `static/` into `staticfiles/`, which PythonAnywhere serves directly at `/static/`.
 
    Re-run `collectstatic` whenever you change CSS, JS, or vendor files.
 
