@@ -23,13 +23,11 @@ class ViewsTests(TestCase):
         )
         # Create the test ROM file on disk at the same location the views serve from
         import os
-        test_rom_dir = '/home/bimo/workspace/online_snesgems_emulator/snes/roms'
+        test_rom_dir = settings.BASE_DIR / 'roms'
         os.makedirs(test_rom_dir, exist_ok=True)
         self.test_file = os.path.join(test_rom_dir, 'test_' + str(self._testMethodName) + '.sfc')
         with open(self.test_file, 'wb') as f:
             f.write(b'X' * 1572864)
-        # Configure test environment to allow testserver host
-        from django.conf import settings
         settings.ALLOWED_HOSTS = ['testserver']
 
     def test_index_returns_200(self):

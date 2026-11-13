@@ -15,7 +15,7 @@ pages that can be deployed on PythonAnywhere.
 ## How it works
 
 The emulation runs **client-side in the browser** (Snes9x compiled to
-WebAssembly, vendored under `snes/static/snes/js/vendor/`). The Django backend
+WebAssembly, vendored under `src/snes/static/snes/js/vendor/`). The Django backend
 serves the UI, the ROM metadata and the binary ROM streams; the heavy lifting
 happens in the browser, so there is no server-side latency and the app can run
 on a modest host.

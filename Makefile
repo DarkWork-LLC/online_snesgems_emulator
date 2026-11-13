@@ -27,7 +27,7 @@ help:
 clean:
 	rm -f db.sqlite3
 	find . -type d -name __pycache__ -prune -exec rm -rf {} +
-	rm -rf snes/staticfiles
+	rm -rf staticfiles
 	rm -f /tmp/snes_server.log /tmp/snes_server.pid
 	rm -f /tmp/emu_test*.log /tmp/debug_*.log
 

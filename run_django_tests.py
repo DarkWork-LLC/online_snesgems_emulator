@@ -7,10 +7,13 @@ the app's own test discovery.
 import os
 import sys
 
-# Ensure the project root is on sys.path
+# Ensure the project root and src/ are on sys.path
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
+SRC_DIR = os.path.join(PROJECT_ROOT, 'src')
+if SRC_DIR not in sys.path:
+    sys.path.insert(0, SRC_DIR)
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'snes_project.settings')
 import django

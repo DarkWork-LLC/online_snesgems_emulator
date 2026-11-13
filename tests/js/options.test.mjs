@@ -7,7 +7,7 @@ import {
     DEFAULT_SNES9X_OPTIONS, SNES9X_REGION_IDS, SNES9X_INTERPOLATION_IDS,
     SNES9X_LOG_LEVEL_IDS, SNES9X_ENGINE_OPTIONS, snes9xOption,
     coerceOptionValue, SNES9X_OPTIONS_SCHEMA,
-} from '../../snes/static/snes/js/vendor/snes9x.options.js';
+} from '../../src/snes/static/snes/js/vendor/snes9x.options.js';
 
 export async function run() {
     let passed = 0, failed = 0, results = [];

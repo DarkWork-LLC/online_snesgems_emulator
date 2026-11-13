@@ -2,10 +2,17 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from pathlib import Path
 
 
 def main():
     """Run administrative tasks."""
+    # src-layout: make the src/ tree importable so `snes_project.settings`
+    # resolves when manage.py is run from the project root.
+    SRC_DIR = Path(__file__).resolve().parent / 'src'
+    if str(SRC_DIR) not in sys.path:
+        sys.path.insert(0, str(SRC_DIR))
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'snes_project.settings')
     try:
         from django.core.management import execute_from_command_line

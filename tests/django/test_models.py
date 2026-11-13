@@ -1,5 +1,6 @@
 """Django unit tests for the Rom model."""
 
+from django.conf import settings
 from django.test import TestCase
 from pathlib import Path
 from snes.models import Rom
@@ -18,7 +19,7 @@ class RomModelTests(TestCase):
             filename='test.sfc',
             file_size=1234,
         )
-        self.test_file = Path('/home/bimo/workspace/online_snesgems_emulator/snes/roms/test.sfc')
+        self.test_file = settings.BASE_DIR / 'roms' / 'test.sfc'
         self.test_file.write_bytes(b'test-data')
 
     def tearDown(self):
