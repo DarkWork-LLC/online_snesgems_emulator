@@ -45,6 +45,47 @@ Features:
   delete pages with formatted HTML content, backed by SQLite and the Django
   admin. No frontend build step or external CDN required.
 
+## Project structure
+
+```
+online_snesgems_emulator/
+├── LICENSE                      # MIT License (open source)
+├── PRIVACY.md                   # Privacy policy
+├── README.md                    # This file
+├── README_PYTHONANYWHERE.md     # PythonAnywhere deployment guide
+├── USER_GUIDE.md                # End-user guide
+├── manage.py                    # Django CLI (src-layout entry point)
+├── requirements.txt             # Django>=5.0
+├── package.json                 # JS test runner (node --test)
+├── Makefile                     # setup / run / test / collectstatic targets
+├── db.sqlite3                   # SQLite database (gitignored)
+├── roms/                        # Bundled SNES cartridge images (.sfc / .smc)
+├── static/                      # Static assets (CSS, JS, Snes9x WASM vendor files)
+│   └── snes/js/vendor/          # Snes9x WebAssembly emulator build
+├── staticfiles/                 # Collected static files for production (gitignored)
+├── src/                         # Python source (src layout)
+│   ├── snes/                    # Emulator app: models, views, URLs, templates
+│   ├── wysiwyg/                 # WYSIWYG page editor app
+│   └── snes_project/            # Django project settings, WSGI, URLs
+├── tests/                       # Django and JS unit tests
+└── validation/                  # Playwright end-to-end smoke test
+```
+
+## URLs
+
+| Path | View |
+|------|------|
+| `/` | SNES emulator — ROM library, virtual gamepad, save states |
+| `/api/roms/` | JSON list of registered ROMs |
+| `/api/roms/<id>/stream/` | Stream a ROM's binary to the browser |
+| `/wysiwyg/` | WYSIWYG page list |
+| `/wysiwyg/new/` | New page editor |
+| `/wysiwyg/<slug>/edit/` | Edit a page |
+| `/wysiwyg/<slug>/` | Public read-only page view |
+| `/wysiwyg/api/save/` | Create/update page (POST JSON) |
+| `/wysiwyg/api/delete/` | Delete page (POST JSON) |
+| `/admin/` | Django admin (ROMs, Pages, users) |
+
 ## WYSIWYG editor (`/wysiwyg/`)
 
 | Path | View |
@@ -72,6 +113,15 @@ python manage.py seed_roms
 The `wysiwyg` app ships with its own migration (`wysiwyg/migrations/`), so
 `migrate` creates the `Page` table automatically.
 
+A `Makefile` is provided for common tasks:
+
+```bash
+make setup    # venv, dependencies, migrate, seed ROMs, collectstatic
+make run      # run the dev server
+make test     # Playwright end-to-end smoke test
+make pa       # print PythonAnywhere deployment steps
+```
+
 ## Run
 
 ```bash
@@ -92,4 +142,24 @@ mouse and trackpad input with touch glow feedback. Keyboard and USB gamepads als
 A Playwright end-to-end smoke test is provided in `validation/test_emulator.py`
 (requires `playwright` and a Chromium install). It loads the first game,
 verifies a frame is rendered, takes a screenshot, stores a save state in
-IndexedDB and exercises the virtual gamepad.
+IndexedDB and exercises the virtual gamepad:
+
+```bash
+make test
+# or
+python validation/test_emulator.py
+```
+
+## License, privacy, and user guide
+
+- `LICENSE` — MIT License (open source)
+- `PRIVACY.md` — Privacy policy (what data is stored locally vs. on the server)
+- `USER_GUIDE.md` — End-user guide (playing, controls, save states, editor)
+- `README_PYTHONANYWHERE.md` — PythonAnywhere deployment guide
+
+**ROMs:** Bundled ROMs are provided for personal/backup use only. You are
+responsible for complying with applicable copyright law in your jurisdiction.
+
+**Third-party notice:** The Snes9x WebAssembly build under
+`static/snes/js/vendor/` is distributed under its own license; this project
+does not claim ownership of it.
