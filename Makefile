@@ -85,7 +85,7 @@ checkstatic:
 	@echo "  URL: /static/"
 	@echo "  Dir: $(CURDIR)/staticfiles"
 
-build: install migrate seed collectstatic
+build: venv install migrate seed collectstatic
 
 setup: venv install migrate seed collectstatic
 	@echo ""
