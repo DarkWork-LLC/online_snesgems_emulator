@@ -39,6 +39,7 @@ def api_roms(request):
             'name': rom.name,
             'filename': rom.filename,
             'size': rom.file_size,
+            'file_size': rom.file_size,
         }
         for rom in Rom.objects.all()
     ]
