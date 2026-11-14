@@ -6,11 +6,18 @@ or a trackpad — with save states persisted in the user's browser. It also
 includes a Django WYSIWYG rich-text page editor (`/wysiwyg/`) for authoring
 pages that can be deployed on PythonAnywhere.
 
-## Games bundled
+## Games bundled (10 ROMs)
 
-- `Ken Griffey Jr. Presents Major League Baseball.smc`
+- `Beavis and Butt-Head (USA).sfc`
+- `Blackthorne (USA).sfc`
+- `Chrono Trigger (USA).sfc`
+- `Final Fantasy 2 (V1.1) (U).smc`
+- `Final Fantasy III (USA) (Rev 1).sfc`
 - `Metal Marines (USA).sfc`
 - `Ogre Battle - The March of the Black Queen (1).smc`
+- `Paperboy 2 (USA).sfc`
+- `True Lies (USA).sfc`
+- `WWF WrestleMania - The Arcade Game (USA).sfc`
 
 ## How it works
 
@@ -24,8 +31,10 @@ Features:
 
 - Play bundled games in the browser (canvas rendering).
 - Controls: keyboard (arrows + SNES diamond layout), USB gamepads (polled
-  automatically), on-screen virtual gamepad (touch + mouse + trackpad) and a
-  draggable thumbstick.
+  automatically), on-screen virtual gamepad (touch + mouse + trackpad) with D-pad, shoulder buttons (L/R, Select, Start), action diamond (X,Y,A,B), and draggable thumbstick.
+- **Button Configuration**: Reassign key bindings for all 12 controller buttons with `localStorage` persistence.
+- **Visual Feedback**: Blue flash / glow effect when touching or clicking on-screen buttons.
+- **Audio Support**: Robust Web Audio handling with Mute toggle and browser autoplay policy unlock.
 - Save states are stored in the user's browser (IndexedDB) and can be
   reloaded later — no server round-trip.
 - Cartridge SRAM (battery-backed saves) is auto-persisted to the browser's
@@ -75,8 +84,8 @@ secure context — `localhost` counts, so `runserver` works as-is.)
 ## Mobile / touchpad
 
 Open the same URL on a phone or tablet. The on-screen virtual gamepad (D-pad,
-face buttons, L/R, Start/Select and the analog thumbstick) supports touch,
-mouse and trackpad input. Keyboard and USB gamepads also work on desktop.
+shoulder buttons, face buttons, Start/Select and analog thumbstick) supports touch,
+mouse and trackpad input with touch glow feedback. Keyboard and USB gamepads also work on desktop.
 
 ## Validate
 

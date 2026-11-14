@@ -213,11 +213,13 @@ if (muteEl) {
     });
 }
 
-window.addEventListener('pointerdown', () => {
-    if (engine.current && typeof engine.current.resume === 'function') {
-        engine.current.resume();
-    }
-}, { capture: true });
+['touchstart', 'touchend', 'pointerdown', 'click'].forEach((eventType) => {
+    window.addEventListener(eventType, () => {
+        if (engine.current && typeof engine.current.resume === 'function') {
+            engine.current.resume();
+        }
+    }, { passive: true, capture: true });
+});
 
 playBtn.addEventListener('click', async () => { await engine.current.start(); updatePlayPause(); });
 pauseBtn.addEventListener('click', async () => { await engine.current.pause(); updatePlayPause(); });

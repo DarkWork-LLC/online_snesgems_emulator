@@ -1,38 +1,28 @@
-# PythonAnywhere deployment — WYSIWYG editor
+# PythonAnywhere deployment — WYSIWYG editor & SNES Emulator
 
-This adds a Django WYSIWYG rich-text page editor to the SNES web emulator, ready to deploy on [PythonAnywhere](https://www.pythonanywhere.com/). It uses only Django + SQLite (already in the project), so no extra `pip` packages are required.
+This project includes a Super Nintendo (SNES) browser emulator and a Django WYSIWYG rich-text page editor, ready to deploy on [PythonAnywhere](https://www.pythonanywhere.com/). It uses only Django + SQLite (already in the project), so no extra external packages beyond Django are required.
 
-## What was added
+## What is included
 
-| File | Purpose |
+| File / Module | Purpose |
 |------|---------|
-| `src/wysiwyg/apps.py` | Django app config |
-| `src/wysiwyg/models.py` | `Page` model (title, slug, rich HTML content, timestamps) |
-| `src/wysiwyg/views.py` | list / new / edit / view pages + JSON save & delete API |
-| `src/wysiwyg/urls.py` | `/wysiwyg/` routes |
-| `src/wysiwyg/admin.py` | Admin registration for `Page` |
-| `src/wysiwyg/templates/wysiwyg/` | base, list, editor, view templates |
-| `static/wysiwyg/css/editor.css` | Editor toolbar + editable area styles |
-| `static/wysiwyg/js/editor.js` | Vanilla-JS rich-text editor (contenteditable) + save/delete API calls |
-| `src/wysiwyg/migrations/0001_initial.py` | Initial migration for `Page` |
-
-## Changes to existing files
-
-- `src/snes_project/settings.py` — added `'wysiwyg'` to `INSTALLED_APPS`
-- `src/snes_project/urls.py` — added `path('wysiwyg/', include('wysiwyg.urls'))`
-- `static/snes/js/app.js` — removed the "Playing <game name>" overlay (placeholder is now cleared on load)
+| `src/snes/` | SNES emulator web app, views, models, and templates (serves 10 bundled ROMs and WebAssembly Snes9x runtime) |
+| `src/wysiwyg/` | WYSIWYG rich-text page editor app (`Page` model, views, APIs, templates) |
+| `static/snes/` | SNES emulator CSS, JS (virtual gamepad, remapping, saved states), and Snes9x WebAssembly assets |
+| `static/wysiwyg/` | WYSIWYG editor styles and vanilla-JS editor implementation |
 
 ## URLs
 
 | Path | View |
 |------|------|
+| `/` | SNES Emulator web app (ROM selection, virtual gamepad with touch feedback, button remapping, save states) |
 | `/wysiwyg/` | Page list |
 | `/wysiwyg/new/` | New page editor |
 | `/wysiwyg/<slug>/edit/` | Edit a page |
 | `/wysiwyg/<slug>/` | Public read-only view |
 | `/wysiwyg/api/save/` | Create/update page (POST JSON) |
 | `/wysiwyg/api/delete/` | Delete page (POST JSON) |
-| `/admin/` | Django admin (manage Pages) |
+| `/admin/` | Django admin (manage ROMs & Pages) |
 
 ## PythonAnywhere deployment steps
 
@@ -58,14 +48,15 @@ This adds a Django WYSIWYG rich-text page editor to the SNES web emulator, ready
    - Static files directory: `/home/<username>/online_snesgems_emulator/staticfiles`
    - **Important**: this is the `staticfiles/` directory (created by `collectstatic`), NOT the `static/` source directory.
 
-5. **Install dependencies and collect static** in a bash console:
+5. **Install dependencies, seed ROMs, and collect static** in a bash console:
    ```bash
    mkvirtualenv --python=/usr/bin/python3.10 snesenv
    workon snesenv
    cd /home/<username>/online_snesgems_emulator
    pip install Django>=5.0
-   python manage.py collectstatic --noinput
    python manage.py migrate
+   python manage.py seed_roms
+   python manage.py collectstatic --noinput
    python manage.py createsuperuser   # optional, for admin access
    ```
 
@@ -75,6 +66,7 @@ This adds a Django WYSIWYG rich-text page editor to the SNES web emulator, ready
    source .venv/bin/activate
    make install
    make migrate
+   make seed
    make collectstatic
    ```
 
@@ -84,10 +76,10 @@ This adds a Django WYSIWYG rich-text page editor to the SNES web emulator, ready
 
 ## Notes
 
-- The editor uses the browser's native `contenteditable` + `document.execCommand`, so it works without any frontend build step or external CDN.
+- The WYSIWYG editor uses the browser's native `contenteditable` + `document.execCommand`, so it works without any frontend build step or external CDN.
 - Content is stored in SQLite (single `db.sqlite3` file), which PythonAnywhere supports on free/paid accounts.
 - CSRF protection is enabled on the save/delete API endpoints; the editor reads the Django `csrftoken` cookie automatically.
-- The SNES emulator overlay fix (`showPlaceholder('')`) means the game canvas is no longer covered by a persistent "Playing <name>" banner.
+- The SNES emulator runs client-side via WebAssembly (Snes9x), supporting virtual gamepad touch feedback, button remapping, audio unlock, and IndexedDB/OPFS persistence.
 
 ### Troubleshooting: static files served as `text/html` (MIME mismatch)
 
