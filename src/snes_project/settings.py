@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 from pathlib import Path
 import os
+import mimetypes
+
+mimetypes.add_type('application/wasm', '.wasm', True)
+mimetypes.add_type('application/javascript', '.mjs', True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # settings.py lives at src/snes_project/settings.py, so three levels up
