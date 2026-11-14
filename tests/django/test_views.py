@@ -16,9 +16,11 @@ class ViewsTests(TestCase):
 
     def setUp(self):
         # Use a unique filename to avoid conflicts with existing DB records
+        filename = 'test_' + str(self._testMethodName) + '.sfc'
+        Rom.objects.filter(filename=filename).delete()
         self.rom = Rom.objects.create(
             name='Metal Marines (USA) Test ' + str(self._testMethodName),
-            filename='test_' + str(self._testMethodName) + '.sfc',
+            filename=filename,
             file_size=1572864,
         )
         # Create the test ROM file on disk at the same location the views serve from
