@@ -204,22 +204,79 @@ export async function load(config) {
     // ---------------------------------------------------------------- audio
     const audioCtx = new AudioContext();
     const sampleRate = Math.round(audioCtx.sampleRate);
-    const workletUrl = URL.createObjectURL(new Blob([WORKLET_SOURCE], { type: 'application/javascript' }));
-    await audioCtx.audioWorklet.addModule(workletUrl);
-    URL.revokeObjectURL(workletUrl);
-    const sink = new AudioWorkletNode(audioCtx, 'snes9x-sink', {
-        numberOfInputs: 0,
-        numberOfOutputs: 1,
-        outputChannelCount: [2],
-    });
+    let enqueuedFrames = 0;
+    let consumedFrames = 0;
+    let sink;
+    if (audioCtx.audioWorklet) {
+        const workletUrl = URL.createObjectURL(new Blob([WORKLET_SOURCE], { type: 'application/javascript' }));
+        await audioCtx.audioWorklet.addModule(workletUrl);
+        URL.revokeObjectURL(workletUrl);
+        const workletNode = new AudioWorkletNode(audioCtx, 'snes9x-sink', {
+            numberOfInputs: 0,
+            numberOfOutputs: 1,
+            outputChannelCount: [2],
+        });
+        workletNode.port.onmessage = (e) => {
+            consumedFrames = e.data;
+        };
+        sink = {
+            port: workletNode.port,
+            connect(dest) {
+                workletNode.connect(dest);
+                return this;
+            },
+            disconnect() {
+                workletNode.disconnect();
+            }
+        };
+    } else {
+        const scriptNode = audioCtx.createScriptProcessor(1024, 0, 2);
+        const cap = 32768;
+        const buf = new Float32Array(cap * 2);
+        let r = 0, w = 0, consumed = 0;
+        scriptNode.onaudioprocess = (e) => {
+            const outL = e.outputBuffer.getChannelData(0);
+            const outR = e.outputBuffer.getChannelData(1);
+            const n = outL.length;
+            for (let i = 0; i < n; i++) {
+                if (r < w) {
+                    const idx = (r % cap) * 2;
+                    outL[i] = buf[idx];
+                    outR[i] = buf[idx + 1];
+                    r++;
+                } else {
+                    outL[i] = 0;
+                    outR[i] = 0;
+                }
+            }
+            consumed += n;
+            consumedFrames = consumed;
+        };
+        sink = {
+            port: {
+                postMessage(s) {
+                    const frames = s.length >> 1;
+                    for (let i = 0; i < frames; i++) {
+                        if (w - r >= cap) break;
+                        const idx = (w % cap) * 2;
+                        buf[idx] = s[i * 2] / 32768;
+                        buf[idx + 1] = s[i * 2 + 1] / 32768;
+                        w++;
+                    }
+                }
+            },
+            connect(dest) {
+                scriptNode.connect(dest);
+                return this;
+            },
+            disconnect() {
+                scriptNode.disconnect();
+            }
+        };
+    }
     const gain = audioCtx.createGain();
     gain.gain.value = Math.max(0, Math.min(1, opts.volume));
     sink.connect(gain).connect(audioCtx.destination);
-    let enqueuedFrames = 0;
-    let consumedFrames = 0;
-    sink.port.onmessage = (e) => {
-        consumedFrames = e.data;
-    };
     // --------------------------------------------------------------- module
     const jsUrl = config.jsUrl ?? new URL('./snes9x.js', import.meta.url).href;
     const wasmUrl = config.wasmUrl ?? new URL('./snes9x.wasm', jsUrl).href;
