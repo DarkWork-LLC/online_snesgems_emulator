@@ -79,8 +79,8 @@ html, body {
     100% { transform: translateY(0px); box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
 }
 
-.stage { position: relative; width: 100%; max-width: 100%; aspect-ratio: 8 / 7; max-height: 70vh; background: #080a0f; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; contain: paint; }
-.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; border-radius: 4px; image-rendering: pixelated; image-rendering: -moz-crisp-edges; background: #080a0f; will-change: transform; }
+.stage { position: relative; width: 100%; max-width: 100%; aspect-ratio: 4 / 3; max-height: 70vh; background: #080a0f; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; contain: paint; box-sizing: border-box; }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; border-radius: 4px; image-rendering: pixelated; image-rendering: -moz-crisp-edges; background: #080a0f; will-change: transform; aspect-ratio: 4 / 3; }
 .stage .placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; pointer-events: none; }
 
 .controls-chrome { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: center; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px; }
@@ -97,32 +97,32 @@ html, body {
 .options-row label { color: var(--muted); font-size: 12px; display: flex; align-items: center; gap: 6px; }
 select, input[type="range"] { accent-color: var(--accent); }
 
-/* Compact controller area, pushed up arrows & action buttons */
-.controller { display: flex; justify-content: center; padding: 4px 0 6px; }
-.gamepad { display: flex; flex-direction: column; align-items: center; gap: 6px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 14px; min-width: 260px; }
+/* Gamepad container as wide as video game player, pushed up layout, larger buttons with comfortable padding/gaps */
+.controller { display: flex; width: 100%; max-width: 100%; justify-content: center; padding: 6px 0; }
+.gamepad { width: 100%; max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 20px; box-sizing: border-box; }
 
-/* Top shoulder row: L far left, Select+Start centered, R far right */
-.shoulders { display: flex; align-items: center; width: 100%; gap: 6px; }
-.shoulders button:first-child { margin-right: auto; }
-.shoulders button:last-child  { margin-left: auto; }
-.shoulder-center { display: flex; gap: 6px; }
+/* Top shoulder row: L aligned with left arrow, R aligned with B button */
+.shoulders { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 620px; margin: 0 auto; padding: 0 16px; gap: 10px; }
+.shoulders button:first-child { margin-right: 0; }
+.shoulders button:last-child  { margin-left: 0; }
+.shoulder-center { display: flex; gap: 8px; justify-content: center; flex: 1; }
 
-/* Main play area: D-pad left, diamond action buttons right (pushed up) */
-.pad-main { display: flex; gap: 14px; width: 100%; align-items: center; justify-content: center; margin-top: -2px; }
+/* Main play area: D-pad left, diamond action buttons right (pushed up and spaced out) */
+.pad-main { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 620px; margin-top: -6px; padding: 0 16px; }
 
-.dpad { display: grid; grid-template-rows: 32px 32px; grid-template-columns: 32px 32px; gap: 3px; }
-.d-direction { flex: 1 1 0; display: flex; align-items: center; justify-content: center; border-radius: 6px; background: var(--panel-2); border: 1px solid var(--border); color: var(--muted); font-size: 16px; cursor: pointer; user-select: none; min-width: 32px; min-height: 32px; }
+.dpad { display: grid; grid-template-rows: 46px 46px; grid-template-columns: 46px 46px; gap: 6px; }
+.d-direction { flex: 1 1 0; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: var(--panel-2); border: 1px solid var(--border); color: var(--muted); font-size: 20px; cursor: pointer; user-select: none; min-width: 46px; min-height: 46px; }
 .d-direction[data-dir="up"]    { grid-row: 1; grid-column: 2; border-radius: 0; }
 .d-direction[data-dir="down"]  { grid-row: 2; grid-column: 2; border-radius: 0; }
 .d-direction[data-dir="left"]  { grid-row: 2; grid-column: 1; border-bottom-right-radius: 0; }
 .d-direction[data-dir="right"] { grid-row: 2; grid-column: 3; border-bottom-left-radius: 0; }
 
-/* Diamond action button layout: Y top, X left, B right, A bottom (pushed up) */
+/* Diamond action button layout: Y top, X left, B right, A bottom (pushed up, larger with gaps) */
 .action-diamond {
     display: grid;
-    grid-template-columns: 38px 38px 38px;
-    grid-template-rows: 38px 38px 38px;
-    gap: 6px;
+    grid-template-columns: 50px 50px 50px;
+    grid-template-rows: 50px 50px 50px;
+    gap: 8px;
     justify-content: center;
     align-items: center;
 }
@@ -131,7 +131,7 @@ select, input[type="range"] { accent-color: var(--accent); }
 .action-diamond button[data-action="b"] { grid-row: 2; grid-column: 3; }
 .action-diamond button[data-action="a"] { grid-row: 3; grid-column: 2; }
 
-.gamepad button, .gamepad .dpad .d-direction { border: 1px solid var(--border); background: var(--panel-2); color: var(--text); border-radius: 6px; padding: 6px 10px; font-size: 13px; cursor: pointer; user-select: none; font-family: inherit; min-width: 38px; min-height: 38px; display: flex; align-items: center; justify-content: center; }
+.gamepad button, .gamepad .dpad .d-direction { border: 1px solid var(--border); background: var(--panel-2); color: var(--text); border-radius: 8px; padding: 8px 12px; font-size: 15px; cursor: pointer; user-select: none; font-family: inherit; min-width: 50px; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: 600; }
 
 /* Blue flash / glow visual feedback on touch/click */
 .gamepad button:active, .gamepad .d-direction:active,
@@ -144,9 +144,9 @@ select, input[type="range"] { accent-color: var(--accent); }
     transition: background 0.05s, transform 0.05s, box-shadow 0.05s;
 }
 
-.gamepad .shoulders { display: flex; gap: 6px; width: 100%; justify-content: center; }
-.gamepad .sticks { display: flex; justify-content: center; gap: 8px; width: 100%; }
-.thumbstick { width: 75px; height: 75px; border-radius: 50%; background: var(--panel-2); border: 1px solid var(--border); position: relative; touch-action: none; cursor: pointer; user-select: none; contain: paint; }
+.gamepad .shoulders { display: flex; gap: 8px; width: 100%; justify-content: center; }
+.gamepad .sticks { display: flex; justify-content: center; gap: 10px; width: 100%; }
+.thumbstick { width: 85px; height: 85px; border-radius: 50%; background: var(--panel-2); border: 1px solid var(--border); position: relative; touch-action: none; cursor: pointer; user-select: none; contain: paint; }
 .thumbstick .inner { position: absolute; inset: 8%; border-radius: 50%; background: #262c3a; border: 1px solid var(--border); will-change: transform; }
 
 /* Controls assignment configuration panel */

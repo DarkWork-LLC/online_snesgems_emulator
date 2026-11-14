@@ -22,6 +22,10 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'snes_project.settings')
 import django  # noqa: E402
 django.setup()
 
+from django.core.management import call_command
+call_command('migrate', verbosity=0)
+call_command('seed_roms', verbosity=0)
+
 test_modules = [
     'tests.django.test_models',
     'tests.django.test_views',
@@ -33,7 +37,6 @@ total = 0
 for module_name in test_modules:
     try:
         module = importlib.import_module(module_name)
-        # Django test modules use unittest.TestCase; find all test cases
         loader = unittest.TestLoader()
         suite = loader.loadTestsFromModule(module)
         total += suite.countTestCases()
