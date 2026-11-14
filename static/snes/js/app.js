@@ -6,6 +6,7 @@ import {
     bindVirtualAction,
     bindThumbstick,
     VIRTUAL_KEYMAP,
+    setKeyBinding,
 } from './controller.js';
 import { SaveStateStore } from './savedstates.js';
 
@@ -101,9 +102,34 @@ async function init() {
         });
     }
 
+    initKeyBindingsUI();
+
     const first = ROMS[0];
     currentRomId = first.id;
     selectRom(first.id);
+}
+
+function initKeyBindingsUI() {
+    const actions = ['up', 'down', 'left', 'right', 'a', 'b', 'x', 'y', 'l', 'r', 'start', 'select'];
+    actions.forEach((action) => {
+        const input = $('key-' + action);
+        if (!input) return;
+        input.value = VIRTUAL_KEYMAP['p1.' + action];
+        input.addEventListener('click', () => {
+            document.querySelectorAll('.key-input').forEach(i => i.classList.remove('listening'));
+            input.classList.add('listening');
+            input.value = 'Press key...';
+
+            function onKeyDown(e) {
+                e.preventDefault();
+                setKeyBinding(action, e.code);
+                input.value = e.code;
+                input.classList.remove('listening');
+                window.removeEventListener('keydown', onKeyDown);
+            }
+            window.addEventListener('keydown', onKeyDown);
+        });
+    });
 }
 
 async function selectRom(romId) {
@@ -161,18 +187,37 @@ async function fetchRomBytes(rom) {
 }
 
 function readOptions() {
+    const muted = $('mute') ? $('mute').checked : false;
+    const vol = muted ? 0 : (parseFloat($('volume').value) || 1);
     return {
         region: $('region').value || 'auto',
         aspect: $('aspect').value || '4:3',
         renderFilter: $('filter').value || 'pixelated',
         cropOverscan: true,
-        volume: parseFloat($('volume').value) || 1,
+        volume: vol,
         gamepads: $('gamepads').checked,
         logLevel: 'error',
         escMenu: true,
         interpolation: 'gaussian',
     };
 }
+
+const muteEl = $('mute');
+if (muteEl) {
+    muteEl.addEventListener('change', () => {
+        const muted = muteEl.checked;
+        const v = muted ? 0 : (parseFloat($('volume').value) || 1);
+        if (engine.current) {
+            engine.current.config.write('volume', v);
+        }
+    });
+}
+
+window.addEventListener('pointerdown', () => {
+    if (engine.current && typeof engine.current.resume === 'function') {
+        engine.current.resume();
+    }
+}, { capture: true });
 
 playBtn.addEventListener('click', async () => { await engine.current.start(); updatePlayPause(); });
 pauseBtn.addEventListener('click', async () => { await engine.current.pause(); updatePlayPause(); });

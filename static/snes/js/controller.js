@@ -27,6 +27,21 @@ export const VIRTUAL_KEYMAP = {
     'p1.select':  'ShiftRight',
 };
 
+try {
+    const saved = localStorage.getItem('snes_virtual_keymap');
+    if (saved) {
+        const parsed = JSON.parse(saved);
+        Object.assign(VIRTUAL_KEYMAP, parsed);
+    }
+} catch (_) {}
+
+export function setKeyBinding(action, code) {
+    VIRTUAL_KEYMAP['p1.' + action] = code;
+    try {
+        localStorage.setItem('snes_virtual_keymap', JSON.stringify(VIRTUAL_KEYMAP));
+    } catch (_) {}
+}
+
 // ---- low-level synthetic keyboard dispatch ----------------------------
 
 function makeKeyEvent(code, down) {
@@ -114,8 +129,16 @@ export function bindVirtualAction(action, el) {
     el.addEventListener('pointerdown', (e) => {
         e.preventDefault();
         setVirtual(action, true);
+        if (el.classList && typeof el.classList.add === 'function') {
+            el.classList.add('blue-flash');
+        }
     });
-    const commitRelease = () => setVirtual(action, false);
+    const commitRelease = () => {
+        setVirtual(action, false);
+        if (el.classList && typeof el.classList.remove === 'function') {
+            el.classList.remove('blue-flash');
+        }
+    };
     el.addEventListener('pointerup', commitRelease);
     el.addEventListener('pointercancel', commitRelease);
     el.addEventListener('pointerleave', commitRelease);

@@ -97,31 +97,32 @@ html, body {
 .options-row label { color: var(--muted); font-size: 12px; display: flex; align-items: center; gap: 6px; }
 select, input[type="range"] { accent-color: var(--accent); }
 
-.controller { display: flex; justify-content: center; padding: 6px 0 10px; }
-.gamepad { display: flex; flex-direction: column; align-items: center; gap: 10px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; min-width: 280px; }
+/* Compact controller area, pushed up arrows & action buttons */
+.controller { display: flex; justify-content: center; padding: 4px 0 6px; }
+.gamepad { display: flex; flex-direction: column; align-items: center; gap: 6px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 14px; min-width: 260px; }
 
 /* Top shoulder row: L far left, Select+Start centered, R far right */
 .shoulders { display: flex; align-items: center; width: 100%; gap: 6px; }
-.shoulders button:first-child { margin-right: auto; }   /* L → far left */
-.shoulders button:last-child  { margin-left: auto; }    /* R → far right */
-.shoulder-center { display: flex; gap: 8px; }
+.shoulders button:first-child { margin-right: auto; }
+.shoulders button:last-child  { margin-left: auto; }
+.shoulder-center { display: flex; gap: 6px; }
 
-/* Main play area: D-pad left, diamond action buttons right */
-.pad-main { display: flex; gap: 16px; width: 100%; align-items: flex-start; }
+/* Main play area: D-pad left, diamond action buttons right (pushed up) */
+.pad-main { display: flex; gap: 14px; width: 100%; align-items: center; justify-content: center; margin-top: -2px; }
 
-.dpad { display: grid; grid-template-rows: 36px 36px; grid-template-columns: 36px 36px; gap: 6px; }
-.d-direction { flex: 1 1 0; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: var(--panel-2); border: 1px solid var(--border); color: var(--muted); font-size: 18px; cursor: pointer; user-select: none; }
+.dpad { display: grid; grid-template-rows: 32px 32px; grid-template-columns: 32px 32px; gap: 3px; }
+.d-direction { flex: 1 1 0; display: flex; align-items: center; justify-content: center; border-radius: 6px; background: var(--panel-2); border: 1px solid var(--border); color: var(--muted); font-size: 16px; cursor: pointer; user-select: none; min-width: 32px; min-height: 32px; }
 .d-direction[data-dir="up"]    { grid-row: 1; grid-column: 2; border-radius: 0; }
 .d-direction[data-dir="down"]  { grid-row: 2; grid-column: 2; border-radius: 0; }
 .d-direction[data-dir="left"]  { grid-row: 2; grid-column: 1; border-bottom-right-radius: 0; }
 .d-direction[data-dir="right"] { grid-row: 2; grid-column: 3; border-bottom-left-radius: 0; }
 
-/* Diamond action button layout: Y top, X left, B right, A bottom */
+/* Diamond action button layout: Y top, X left, B right, A bottom (pushed up) */
 .action-diamond {
     display: grid;
-    grid-template-columns: 44px 44px 44px;
-    grid-template-rows: 44px 44px 44px;
-    gap: 8px;
+    grid-template-columns: 38px 38px 38px;
+    grid-template-rows: 38px 38px 38px;
+    gap: 6px;
     justify-content: center;
     align-items: center;
 }
@@ -130,13 +131,67 @@ select, input[type="range"] { accent-color: var(--accent); }
 .action-diamond button[data-action="b"] { grid-row: 2; grid-column: 3; }
 .action-diamond button[data-action="a"] { grid-row: 3; grid-column: 2; }
 
-.gamepad .row { display: flex; gap: 8px; width: 100%; justify-content: center; }
-.gamepad button, .gamepad .dpad .d-direction { border: 1px solid var(--border); background: var(--panel-2); color: var(--text); border-radius: 8px; padding: 10px 14px; font-size: 15px; cursor: pointer; user-select: none; font-family: inherit; min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
-.gamepad button:active, .gamepad .d-direction:active, .gamepad button.pressed, .gamepad .d-direction.pressed { background: var(--accent-dim); border-color: var(--accent); }
+.gamepad button, .gamepad .dpad .d-direction { border: 1px solid var(--border); background: var(--panel-2); color: var(--text); border-radius: 6px; padding: 6px 10px; font-size: 13px; cursor: pointer; user-select: none; font-family: inherit; min-width: 38px; min-height: 38px; display: flex; align-items: center; justify-content: center; }
+
+/* Blue flash / glow visual feedback on touch/click */
+.gamepad button:active, .gamepad .d-direction:active,
+.gamepad button.blue-flash, .gamepad .d-direction.blue-flash {
+    background: #3b82f6 !important;
+    border-color: #60a5fa !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.8) !important;
+    transform: scale(0.95);
+    transition: background 0.05s, transform 0.05s, box-shadow 0.05s;
+}
+
 .gamepad .shoulders { display: flex; gap: 6px; width: 100%; justify-content: center; }
-.gamepad .sticks { display: flex; justify-content: center; gap: 12px; width: 100%; }
-.thumbstick { width: 100px; height: 100px; border-radius: 50%; background: var(--panel-2); border: 1px solid var(--border); position: relative; touch-action: none; cursor: pointer; user-select: none; contain: paint; }
+.gamepad .sticks { display: flex; justify-content: center; gap: 8px; width: 100%; }
+.thumbstick { width: 75px; height: 75px; border-radius: 50%; background: var(--panel-2); border: 1px solid var(--border); position: relative; touch-action: none; cursor: pointer; user-select: none; contain: paint; }
 .thumbstick .inner { position: absolute; inset: 8%; border-radius: 50%; background: #262c3a; border: 1px solid var(--border); will-change: transform; }
+
+/* Controls assignment configuration panel */
+.controls-assign {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.controls-assign h3 { margin: 0; font-size: 15px; color: var(--text); }
+.controls-assign p { margin: 0; font-size: 12px; color: var(--muted); }
+.assign-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 6px;
+}
+.assign-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 8px;
+}
+.assign-row label { font-size: 12px; color: var(--muted); }
+.key-input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 11px;
+    width: 75px;
+    text-align: center;
+    cursor: pointer;
+}
+.key-input.listening {
+    border-color: var(--accent);
+    background: rgba(59,130,246,0.2);
+    color: var(--text);
+}
 
 .statusbar { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; }
 
@@ -145,14 +200,13 @@ select, input[type="range"] { accent-color: var(--accent); }
     .app-header { padding: 8px 10px; min-height: 80px; }
     .app-header h1 { font-size: 18px; }
     .app-header .sub { font-size: 12px; }
-    .gamepad { min-width: 180px; padding: 12px; gap: 8px; }
-    .thumbstick { width: 80px; height: 80px; }
-    .thumbstick .inner { inset: 7%; }
-    .dpad { grid-template-rows: 32px 32px; grid-template-columns: 32px 32px; gap: 4px; }
-    .d-direction { font-size: 16px; border-radius: 6px; }
-    .action-diamond { grid-template-columns: 38px 38px 38px; grid-template-rows: 38px 38px 38px; gap: 6px; }
+    .gamepad { min-width: 180px; padding: 10px; gap: 6px; }
+    .thumbstick { width: 65px; height: 65px; }
+    .dpad { grid-template-rows: 28px 28px; grid-template-columns: 28px 28px; gap: 3px; }
+    .d-direction { font-size: 14px; min-width: 28px; min-height: 28px; }
+    .action-diamond { grid-template-columns: 34px 34px 34px; grid-template-rows: 34px 34px 34px; gap: 4px; }
     .shoulders { gap: 4px; }
     .shoulder-center { gap: 6px; }
     .stage { max-height: 55vh; }
-*:focus-visible {    outline: 2px solid var(--accent);    outline-offset: 2px;}
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 }
