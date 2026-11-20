@@ -37,8 +37,8 @@ export async function run() {
     t('VIRTUAL_KEYMAP maps all 12 p1 actions to player-1 key codes', () => {
         assert.deepStrictEqual(controller.VIRTUAL_KEYMAP, {
             'p1.up': 'ArrowUp', 'p1.down': 'ArrowDown', 'p1.left': 'ArrowLeft',
-            'p1.right': 'ArrowRight', 'p1.a': 'KeyM', 'p1.b': 'KeyK',
-            'p1.x': 'KeyN', 'p1.y': 'KeyJ', 'p1.l': 'KeyQ', 'p1.r': 'KeyW',
+            'p1.right': 'ArrowRight', 'p1.a': 'KeyS', 'p1.b': 'KeyX',
+            'p1.x': 'KeyA', 'p1.y': 'KeyZ', 'p1.l': 'KeyQ', 'p1.r': 'KeyW',
             'p1.start': 'Enter', 'p1.select': 'ShiftRight',
         });
     });
@@ -131,8 +131,8 @@ export async function run() {
         assert.strictEqual(controller.VirtualState.right, true);
         assert.strictEqual(dispatched.length, 3);
         assert.strictEqual(dispatched[0].code, 'ArrowRight');
-        assert.strictEqual(dispatched[1].code, 'KeyM');
-        assert.strictEqual(dispatched[2].code, 'KeyK');
+        assert.strictEqual(dispatched[1].code, 'KeyS');
+        assert.strictEqual(dispatched[2].code, 'KeyX');
     });
     t('setVirtual changes state and dispatches', () => {
         resetEvents(); controller.setVirtual('r', true);
@@ -176,7 +176,7 @@ export async function run() {
         el._listeners.pointerdown({ preventDefault() {} });
         assert.strictEqual(controller.VirtualState.y, true);
         assert.strictEqual(dispatched.length, 1);
-        assert.strictEqual(dispatched[0].code, 'KeyJ');
+        assert.strictEqual(dispatched[0].code, 'KeyZ');
     });
     t('bindVirtualAction pointerup sets action false', () => {
         resetEvents();

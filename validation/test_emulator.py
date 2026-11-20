@@ -13,7 +13,7 @@ def main():
             page = browser.new_page(viewport={'width': 1280, 'height': 800}, device_scale_factor=1)
             try:
                 page.goto(BASE, wait_until='domcontentloaded', timeout=60000)
-                page.wait_for_selector('.rom-card', timeout=60000)
+                page.wait_for_selector('.rom-card', state='attached', timeout=60000)
                 roms = page.eval_on_selector_all(
                     '.rom-card', 'els => els.map(function(e){return e.dataset.romId;})')
                 print('[info] ROM cards:', roms)

@@ -1,7 +1,6 @@
 """Django unit tests for the SNES views."""
 
-# Django does not accept empty ALLOWED_HOSTS for tests, so we configure it
-# to 'testserver' so the test client can issue requests without errors.
+import os
 from django.conf import settings
 
 settings.ALLOWED_HOSTS = ['testserver']
@@ -15,7 +14,22 @@ class ViewsTests(TestCase):
     """Tests for the SNES emulator views."""
 
     def setUp(self):
-        # Use a unique filename to avoid conflicts with existing DB records
+        # Create the standard ROM to test against (same as seed command)
+        rom, created = Rom.objects.get_or_create(
+            filename='Metal Marines (USA).sfc',
+            defaults={
+                'name': 'Metal Marines (USA)',
+                'file_size': 1572864,
+            },
+        )
+        if created:
+            test_rom_dir = settings.BASE_DIR / 'roms'
+            os.makedirs(test_rom_dir, exist_ok=True)
+            test_file = test_rom_dir / 'Metal Marines (USA).sfc'
+            with open(test_file, 'wb') as f:
+                f.write(b'X' * 1572864)
+
+        # Delete any existing test ROMs to avoid conflicts between tests
         filename = 'test_' + str(self._testMethodName) + '.sfc'
         Rom.objects.filter(filename=filename).delete()
         self.rom = Rom.objects.create(
@@ -24,10 +38,9 @@ class ViewsTests(TestCase):
             file_size=1572864,
         )
         # Create the test ROM file on disk at the same location the views serve from
-        import os
         test_rom_dir = settings.BASE_DIR / 'roms'
         os.makedirs(test_rom_dir, exist_ok=True)
-        self.test_file = os.path.join(test_rom_dir, 'test_' + str(self._testMethodName) + '.sfc')
+        self.test_file = os.path.join(test_rom_dir, filename)
         with open(self.test_file, 'wb') as f:
             f.write(b'X' * 1572864)
         settings.ALLOWED_HOSTS = ['testserver']

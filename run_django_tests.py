@@ -22,7 +22,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'snes_project.settings')
 import django  # noqa: E402
 django.setup()
 
-from django.core.management import call_command
+from django.core.management import call_command  # noqa: E402
 call_command('migrate', verbosity=0)
 call_command('seed_roms', verbosity=0)
 

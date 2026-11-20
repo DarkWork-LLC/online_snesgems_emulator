@@ -17,7 +17,7 @@ export const VIRTUAL_KEYMAP = {
     'p1.down':    'ArrowDown',
     'p1.left':    'ArrowLeft',
     'p1.right':   'ArrowRight',
-    'p1.a':       'KeyM',
+    'p1.a':       'KeyS',
     'p1.b':       'KeyP',
     'p1.x':       'KeyC',
     'p1.y':       'KeyF',
