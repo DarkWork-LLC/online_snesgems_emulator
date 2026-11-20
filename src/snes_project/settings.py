@@ -21,6 +21,11 @@ mimetypes.add_type('application/javascript', '.mjs', True)
 # settings.py lives at src/snes_project/settings.py, so three levels up
 # is the project root.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+# Default auto field configuration for Django 5.0+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Default auto field configuration for Django 5.0+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Quick-start development settings - unsuitable for production
