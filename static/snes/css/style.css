@@ -84,7 +84,7 @@ html, body {
 .stage .placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; pointer-events: none; }
 
 .controls-chrome { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: center; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px; }
-.btn { appearance: none; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); border-radius: 6px; padding: 6px 10px; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; transition: background 0.1s, border-color 0.1s; }
+.btn { appearance: none; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); border-radius: 6px; padding: 6px 10px; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; min-height: 44px; min-width: 44px; transition: background 0.1s, border-color 0.1s; }
 .btn:hover { border-color: #4a5568; background: #232a36; }
 .btn:active { background: #1a202a; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
@@ -205,13 +205,14 @@ select, input[type="range"] { accent-color: var(--accent); }
     .app-header { padding: 8px 10px; min-height: 80px; }
     .app-header h1 { font-size: 18px; }
     .app-header .sub { font-size: 12px; }
-    .gamepad { min-width: 180px; padding: 10px; gap: 6px; }
+    .controls-chrome { gap: 10px; }
+    .gamepad { min-width: 180px; padding: 12px; gap: 10px; }
     .thumbstick { width: 65px; height: 65px; }
-    .dpad { grid-template-rows: 28px 28px; grid-template-columns: 28px 28px; gap: 3px; }
+    .dpad { grid-template-rows: 28px 28px; grid-template-columns: 28px 28px; gap: 8px; }
     .d-direction { font-size: 14px; min-width: 28px; min-height: 28px; }
-    .action-diamond { grid-template-columns: 36px 36px; grid-template-rows: 36px 36px; gap: 8px; }
-    .shoulders { gap: 4px; }
-    .shoulder-center { gap: 6px; }
+    .action-diamond { grid-template-columns: 36px 36px; grid-template-rows: 36px 36px; gap: 12px; }
+    .shoulders { gap: 10px; }
+    .shoulder-center { gap: 10px; }
     .stage { max-height: 60vh; }
     *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 }
