@@ -37,23 +37,32 @@ def main():
                 page.fill('#state-name', 'pw-test-state-1')
                 page.click('#save-state-confirm')
                 page.wait_for_timeout(1500)
-                count = page.evaluate(
+                info = page.evaluate(
                     "(async () => {\n"
                     "  const db = await new Promise((res, rej) => {\n"
                     "    var r = indexedDB.open('snes-emu', 1);\n"
                     "    r.onsuccess = () => res(r.result);\n"
                     "    r.onerror = () => rej(r.error);\n"
                     '  });\n'
-                    "  const all = db.transaction('save-states', 'readonly')\n"
-                    "    .objectStore('save-states').getAllKeys();\n"
-                    '  return new Promise((res, rej) => {\n'
-                    '    all.onsuccess = () => res(all.result || []);\n'
-                    '    all.onerror = () => rej(all.error);\n'
+                    "  const store = db.transaction('save-states', 'readonly').objectStore('save-states');\n"
+                    "  const keys = await new Promise((res, rej) => {\n"
+                    "    const req = store.getAllKeys();\n"
+                    "    req.onsuccess = () => res(req.result || []);\n"
+                    "    req.onerror = () => rej(req.error);\n"
                     '  });\n'
+                    "  if (!keys.length)\n"
+                    "    return { ok: false, keys: 0, bytes: 0 };\n"
+                    "  const data = await new Promise((res, rej) => {\n"
+                    "    const req = store.get(keys[0]);\n"
+                    "    req.onsuccess = () => res(req.result);\n"
+                    "    req.onerror = () => rej(req.error);\n"
+                    '  });\n'
+                    "  const bytes = data ? ((data instanceof Uint8Array) ? data.length : -1) : 0;\n"
+                    "  return { ok: keys.length > 0 && bytes > 0, keys: keys.length, bytes: bytes };\n"
                     '})()'
                 )
-                print('[info] saved state keys:', count)
-                passed.append('save state stored: ' + str(bool(count)))
+                print('[info] saved state:', info)
+                passed.append('save state stored: ' + str(bool(info.get('ok'))) + ' keys=' + str(info.get('keys')) + ' bytes=' + str(info.get('bytes')))
 
                 page.evaluate(
                     "(async () => {\n"
