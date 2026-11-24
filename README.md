@@ -31,7 +31,7 @@ Features:
 
 - Play bundled games in the browser (canvas rendering).
 - Controls: keyboard (arrows + SNES diamond layout), USB gamepads (polled
-  automatically), on-screen virtual gamepad (touch + mouse + trackpad) with D-pad, shoulder buttons (L/R, Select, Start), action diamond (X,Y,A,B), and draggable thumbstick.
+  automatically), on-screen virtual gamepad (touch + mouse + trackpad) with D-pad, shoulder buttons (L/R, Select, Start), action diamond (X,Y,A,B), and draggable thumbstick with optimized touch margins and button spacing.
 - **Button Configuration**: Reassign key bindings for all 12 controller buttons with `localStorage` persistence.
 - **Visual Feedback**: Blue flash / glow effect when touching or clicking on-screen buttons.
 - **Audio Support**: Robust Web Audio handling with Mute toggle and browser autoplay policy unlock.
@@ -133,9 +133,7 @@ secure context — `localhost` counts, so `runserver` works as-is.)
 
 ## Mobile / touchpad
 
-Open the same URL on a phone or tablet. The on-screen virtual gamepad (D-pad,
-shoulder buttons, face buttons, Start/Select and analog thumbstick) supports touch,
-mouse and trackpad input with touch glow feedback. Keyboard and USB gamepads also work on desktop.
+Open the same URL on a phone or tablet. The on-screen virtual gamepad features generous button margins and touch spacing (D-pad, shoulder buttons, face buttons, Start/Select, and analog thumbstick) supporting touch, mouse, and trackpad input with touch glow feedback. Keyboard and USB gamepads also work on desktop.
 
 ## Validate
 

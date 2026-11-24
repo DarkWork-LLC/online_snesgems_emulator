@@ -115,7 +115,7 @@ configuration.
 
 ### On-screen virtual gamepad (touch, mouse, trackpad)
 
-On phones, tablets, and trackpads, use the on-screen virtual gamepad:
+On phones, tablets, and trackpads, use the on-screen virtual gamepad, featuring optimized button margins and touch spacing:
 
 - **D-pad** — directional input
 - **Shoulder buttons** — L, R
@@ -124,7 +124,7 @@ On phones, tablets, and trackpads, use the on-screen virtual gamepad:
 - **Thumbstick** — draggable analog directional input
 
 Buttons flash with a blue glow when tapped or clicked. The virtual gamepad
-supports touch, mouse, and trackpad input.
+supports touch, mouse, and trackpad input with comfortable tap targets.
 
 ---
 
