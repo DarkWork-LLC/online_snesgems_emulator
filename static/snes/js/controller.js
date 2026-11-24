@@ -200,3 +200,48 @@ export function bindGamepad(selector) {
         if (action) bindVirtualAction(action, btn);
     });
 }
+
+// ---- control configuration profiles ----------------------------------
+
+export function getSavedProfiles() {
+    try {
+        const data = localStorage.getItem('snes_control_profiles');
+        return data ? JSON.parse(data) : {};
+    } catch (_) {
+        return {};
+    }
+}
+
+export function saveControlProfile(name, keymap) {
+    const profiles = getSavedProfiles();
+    profiles[name] = { ...keymap };
+    try {
+        localStorage.setItem('snes_control_profiles', JSON.stringify(profiles));
+    } catch (_) {}
+}
+
+export function loadControlProfile(name) {
+    const profiles = getSavedProfiles();
+    const map = profiles[name];
+    if (!map) return false;
+    Object.keys(map).forEach((k) => {
+        VIRTUAL_KEYMAP[k] = map[k];
+    });
+    try {
+        localStorage.setItem('snes_virtual_keymap', JSON.stringify(VIRTUAL_KEYMAP));
+    } catch (_) {}
+    return true;
+}
+
+export function deleteControlProfile(name) {
+    const profiles = getSavedProfiles();
+    if (profiles[name]) {
+        delete profiles[name];
+        try {
+            localStorage.setItem('snes_control_profiles', JSON.stringify(profiles));
+        } catch (_) {}
+        return true;
+    }
+    return false;
+}
+

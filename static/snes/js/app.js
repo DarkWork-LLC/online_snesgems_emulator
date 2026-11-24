@@ -7,6 +7,10 @@ import {
     bindThumbstick,
     VIRTUAL_KEYMAP,
     setKeyBinding,
+    getSavedProfiles,
+    saveControlProfile,
+    loadControlProfile,
+    deleteControlProfile,
 } from './controller.js';
 import { SaveStateStore } from './savedstates.js';
 
@@ -103,6 +107,7 @@ async function init() {
     }
 
     initKeyBindingsUI();
+    refreshControlProfilesList();
 
     const first = ROMS[0];
     currentRomId = first.id;
@@ -129,6 +134,91 @@ function initKeyBindingsUI() {
             }
             window.addEventListener('keydown', onKeyDown);
         });
+    });
+}
+
+function updateKeyBindingsUIInputs() {
+    const actions = ['up', 'down', 'left', 'right', 'a', 'b', 'x', 'y', 'l', 'r', 'start', 'select'];
+    actions.forEach((action) => {
+        const input = $('key-' + action);
+        if (input) input.value = VIRTUAL_KEYMAP['p1.' + action] || '';
+    });
+}
+
+function refreshControlProfilesList() {
+    const list = $('controls-profile-list');
+    if (!list) return;
+    const profiles = getSavedProfiles();
+    const keys = Object.keys(profiles);
+    list.innerHTML = '';
+    if (!keys.length) {
+        const opt = document.createElement('option');
+        opt.textContent = 'No saved profiles';
+        list.appendChild(opt);
+        if ($('delete-controls')) $('delete-controls').disabled = true;
+        if ($('load-controls')) $('load-controls').disabled = true;
+        return;
+    }
+    if ($('delete-controls')) $('delete-controls').disabled = false;
+    if ($('load-controls')) $('load-controls').disabled = false;
+    keys.forEach((k) => {
+        const opt = document.createElement('option');
+        opt.value = k;
+        opt.textContent = k;
+        list.appendChild(opt);
+    });
+}
+
+const saveControlsBtn = $('save-controls-confirm');
+const loadControlsBtn = $('load-controls');
+const deleteControlsBtn = $('delete-controls');
+const controlsProfileNameInput = $('controls-profile-name');
+
+if (saveControlsBtn) {
+    saveControlsBtn.addEventListener('click', () => {
+        const name = controlsProfileNameInput.value.trim() || 'default';
+        saveControlProfile(name, VIRTUAL_KEYMAP);
+        controlsProfileNameInput.value = '';
+        refreshControlProfilesList();
+        flash('Control profile stored.');
+    });
+}
+
+if (loadControlsBtn) {
+    loadControlsBtn.addEventListener('click', () => {
+        const name = $('controls-profile-list').value;
+        if (!name) { flash('Choose a profile first.'); return; }
+        const ok = loadControlProfile(name);
+        if (ok) {
+            updateKeyBindingsUIInputs();
+            if (engine.current) {
+                engine.current.setInput(VIRTUAL_KEYMAP);
+            }
+            flash('Control profile loaded.');
+        } else {
+            flash('Profile not found.');
+        }
+    });
+}
+
+if (deleteControlsBtn) {
+    deleteControlsBtn.addEventListener('click', () => {
+        const name = $('controls-profile-list').value;
+        if (!name) { flash('Choose a profile first.'); return; }
+        if (!confirm('Delete control profile "' + name + '"?')) return;
+        const ok = deleteControlProfile(name);
+        if (ok) {
+            refreshControlProfilesList();
+            flash('Profile deleted.');
+        } else {
+            flash('Delete failed.');
+        }
+    });
+}
+
+if (controlsProfileNameInput) {
+    controlsProfileNameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') saveControlsBtn.click();
     });
 }
 

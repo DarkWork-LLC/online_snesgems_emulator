@@ -109,7 +109,14 @@
     <script type="module" src="{% static 'snes/js/app.js' %}"></script>
 <div class="controls-assign">
     <h3>Control Configuration</h3>
-    <p>Reassign controls for the SNES emulator.</p>
+    <p>Reassign controls for the SNES emulator and save/load custom control profiles.</p>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 8px 0;">
+        <input type="text" id="controls-profile-name" placeholder="profile name" style="width:120px;padding:6px;border-radius:6px;border:1px solid #4a5568;background:#0c0e12;color:#e6e9ef">
+        <button class="btn accent" id="save-controls-confirm" style="padding: 6px 12px; min-height: 36px; min-width: auto; font-size: 12px;">Save Profile</button>
+        <select id="controls-profile-list" style="padding:6px;border-radius:6px;border:1px solid #4a5568;background:#0c0e12;color:#e6e9ef"></select>
+        <button class="btn good" id="load-controls" style="padding: 6px 12px; min-height: 36px; min-width: auto; font-size: 12px;">Load</button>
+        <button class="btn danger" id="delete-controls" style="padding: 6px 12px; min-height: 36px; min-width: auto; font-size: 12px;">Delete</button>
+    </div>
     <div class="assign-section">
         <div class="assign-row">
             <label for="key-up">Up:</label>
